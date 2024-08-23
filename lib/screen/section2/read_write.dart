@@ -6,17 +6,35 @@ import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
 import 'package:nfc_project/widget/NFC.dart';
 
-class ReadScreen extends StatefulWidget {
-  const ReadScreen({super.key});
+class ReadWriteScreen extends StatefulWidget {
+  const ReadWriteScreen({super.key});
 
   @override
-  State<ReadScreen> createState() => _ReadScreenState();
+  State<ReadWriteScreen> createState() => _ReadWriteScreenState();
 }
 
-class _ReadScreenState extends State<ReadScreen> {
+class _ReadWriteScreenState extends State<ReadWriteScreen> {
   bool history = false;
   bool game = false;
   bool nfc = false;
+
+  final List<Map<String, dynamic>> history_log = List.generate(30, (index) {
+    final String imagePath = 'asset/image/icon_flutter.png';
+    return {
+      'name': 'Card name ${index + 1}',
+      'content': [
+        {
+          'image': imagePath,
+          'detail': 'Description',
+          'page': CardInfoScreen(
+            imagePath: imagePath,
+            page: ReadWriteScreen(),
+            isAdd: true,
+          ),
+        },
+      ]
+    };
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +66,7 @@ class _ReadScreenState extends State<ReadScreen> {
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 200),
-              top: history ? 0 : -screenHeight,
-              left: 0,
+              left: history ? 0 : -100,
               child: HistoryBox(
                 historyLog: history_log,
                 historyBoxHeight: screenHeight,
@@ -85,21 +102,3 @@ class _ReadScreenState extends State<ReadScreen> {
     });
   }
 }
-
-final List<Map<String, dynamic>> history_log = List.generate(30, (index) {
-  final String imagePath = 'asset/image/Nightrose.png';
-  return {
-    'name': 'Arisa Mihairovuna Kujō ${index + 1}',
-    'content': [
-      {
-        'image': imagePath,
-        'detail': 'Detail ${index + 1}',
-        'page': CardInfoScreen(
-          imagePath: imagePath,
-          page: ReadScreen(),
-          isAdd: true,
-        ),
-      },
-    ]
-  };
-});

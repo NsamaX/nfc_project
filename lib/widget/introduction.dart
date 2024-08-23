@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Introduction extends StatelessWidget {
   final String title;
-  final String detail;
+  final String? detail;
   final String buttom;
   final Widget page;
   final bool showSigninIcon;
@@ -10,7 +10,7 @@ class Introduction extends StatelessWidget {
   const Introduction({
     super.key,
     required this.title,
-    this.detail = 'None',
+    this.detail,
     required this.buttom,
     required this.page,
     this.showSigninIcon = false,
@@ -24,7 +24,7 @@ class Introduction extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildTitle(context),
-            if (detail != 'None') _buildDescription(context),
+            if (detail != null) _buildDescription(context),
             if (showSigninIcon) _buildSigninIcon(),
             _buildStartButton(context),
           ],
@@ -42,7 +42,7 @@ class Introduction extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
       child: Text(
-        detail,
+        detail!,
         style: theme.textTheme.bodyMedium,
         textAlign: TextAlign.center,
       ),

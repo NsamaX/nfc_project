@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section2/read.dart';
+import 'package:nfc_project/screen/section2/read_write.dart';
 import 'package:nfc_project/widget/introduction.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class SignInScreen extends StatelessWidget {
       title: 'Let\'s me know you.',
       showSigninIcon: true,
       buttom: 'Guess',
-      page: const ReadScreen(),
+      page: const ReadWriteScreen(),
     );
   }
 }

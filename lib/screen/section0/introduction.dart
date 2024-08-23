@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nfc_project/screen/section0/signin.dart';
 import 'package:nfc_project/widget/introduction.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class IntroductionScreen extends StatelessWidget {
+  const IntroductionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

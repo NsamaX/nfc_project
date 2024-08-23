@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section0/welcome.dart';
+import 'package:nfc_project/screen/section0/introduction.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
 import 'package:nfc_project/widget/label/normal.dart';
@@ -60,7 +60,7 @@ final List<Map<String, dynamic>> setting = [
       {
         'icon': Icons.logout_rounded,
         'text': 'Sign out',
-        'page': WelcomeScreen(),
+        'page': IntroductionScreen(),
       },
     ]
   },

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/screen/card_info.dart';
+import 'package:nfc_project/screen/section2/read_write.dart';
 import 'package:nfc_project/screen/section2/search.dart';
 
 class OpionBox extends StatefulWidget {
@@ -29,16 +31,20 @@ class _OpionBoxState extends State<OpionBox> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildItem(
-            image: 'asset/image/icon_Vanguard.png',
+            image: 'asset/image/icon_flutter.png',
             page: SearchScreen(),
           ),
           _buildItem(
             label: 'Other',
-            page: SearchScreen(),
+            page: SearchScreen(search: false),
           ),
           _buildItem(
-            label: 'Add',
-            page: null,
+            label: 'Custom',
+            page: CardInfoScreen(
+              page: ReadWriteScreen(),
+              isAdd: true,
+              isCustom: true,
+            ),
           ),
           _buildItem(
             label: 'Remove',
@@ -73,9 +79,12 @@ class _OpionBoxState extends State<OpionBox> {
             borderRadius: borderRadius,
           ),
           child: image != null
-              ? ClipRRect(
-                  borderRadius: borderRadius,
-                  child: Image.asset(image, fit: BoxFit.cover),
+              ? Padding(
+                  padding: const EdgeInsets.all(6),
+                  child: ClipRRect(
+                    borderRadius: borderRadius,
+                    child: Image.asset(image, fit: BoxFit.cover),
+                  ),
                 )
               : Center(
                   child: Text(

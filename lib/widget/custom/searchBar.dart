@@ -35,7 +35,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                         .bodySmall
                         ?.copyWith(color: Colors.black),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
                     ),
                     filled: true,

@@ -4,8 +4,6 @@ import 'package:nfc_project/screen/section2/read_write.dart';
 import 'package:nfc_project/screen/section2/search.dart';
 
 class OpionBox extends StatefulWidget {
-  final double boxSize = 50;
-  final double spacing = 16;
   final bool optionBoxVisible;
 
   const OpionBox({Key? key, required this.optionBoxVisible}) : super(key: key);
@@ -15,6 +13,8 @@ class OpionBox extends StatefulWidget {
 }
 
 class _OpionBoxState extends State<OpionBox> {
+  final double boxSize = 50;
+  final double spacing = 16;
   final BorderRadius borderRadius = BorderRadius.circular(8);
   final Duration animationDuration = const Duration(milliseconds: 200);
 
@@ -23,7 +23,7 @@ class _OpionBoxState extends State<OpionBox> {
     return AnimatedContainer(
       duration: animationDuration,
       transform: Matrix4.translationValues(
-        widget.optionBoxVisible ? 0 : widget.boxSize,
+        widget.optionBoxVisible ? 0 : boxSize,
         0,
         0,
       ),
@@ -36,7 +36,7 @@ class _OpionBoxState extends State<OpionBox> {
           ),
           _buildItem(
             label: 'Other',
-            page: SearchScreen(search: false),
+            page: SearchScreen(other: true),
           ),
           _buildItem(
             label: 'Custom',
@@ -61,7 +61,7 @@ class _OpionBoxState extends State<OpionBox> {
     Widget? page,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: widget.spacing),
+      padding: EdgeInsets.only(bottom: spacing),
       child: GestureDetector(
         onTap: () {
           if (page != null) {
@@ -72,8 +72,8 @@ class _OpionBoxState extends State<OpionBox> {
           }
         },
         child: Container(
-          width: widget.boxSize,
-          height: widget.boxSize,
+          width: boxSize,
+          height: boxSize,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: borderRadius,

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class LabelCard extends StatelessWidget {
   final List<Map<String, dynamic>> label;
   final bool whiteBackgrund;
+  final bool play;
 
   const LabelCard({
     Key? key,
     required this.label,
     this.whiteBackgrund = true,
+    this.play = false,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class LabelCard extends StatelessWidget {
         itemCount: label.length,
         itemBuilder: (context, categoryIndex) {
           final category = label[categoryIndex];
+          final int numberOfCard = play ? category['numberOfCard'] : -1;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +40,7 @@ class LabelCard extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 6),
                   height: 60,
                   decoration: BoxDecoration(
-                    color: whiteBackgrund
+                    color: whiteBackgrund || numberOfCard > 0
                         ? Colors.white
                         : Theme.of(context).appBarTheme.backgroundColor,
                     borderRadius: whiteBackgrund
@@ -93,7 +96,7 @@ class LabelCard extends StatelessWidget {
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      color: whiteBackgrund
+                                      color: whiteBackgrund || numberOfCard > 0
                                           ? Colors.black
                                           : Colors.white,
                                     ),
@@ -108,7 +111,7 @@ class LabelCard extends StatelessWidget {
                                     .textTheme
                                     .bodySmall
                                     ?.copyWith(
-                                      color: whiteBackgrund
+                                      color: whiteBackgrund || numberOfCard > 0
                                           ? Colors.black.withOpacity(0.6)
                                           : Colors.white.withOpacity(0.6),
                                     ),
@@ -118,6 +121,20 @@ class LabelCard extends StatelessWidget {
                             ],
                           ),
                         ),
+                        if (numberOfCard > -1)
+                          Container(
+                            width: 20,
+                            child: Text(
+                              category['numberOfCard'].toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
+                                    color:
+                                        numberOfCard > 0 ? Colors.black : null,
+                                  ),
+                            ),
+                          )
                       ],
                     ),
                   ),

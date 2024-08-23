@@ -3,21 +3,20 @@ import 'package:nfc_project/widget/boxDrawer/NFC.dart';
 import 'package:nfc_project/widget/card/info.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 
-// ignore: must_be_immutable
 class CardInfoScreen extends StatefulWidget {
   final String? imagePath;
   final String? detail;
   final Widget page;
   final bool isAdd;
   final bool isCustom;
-  bool isNFCDetected;
+  final bool isNFCDetected;
 
-  CardInfoScreen({
+  const CardInfoScreen({
     super.key,
     this.imagePath,
     this.detail,
     required this.page,
-    this.isAdd = false,
+    this.isAdd = true,
     this.isCustom = false,
     this.isNFCDetected = false,
   });
@@ -27,12 +26,24 @@ class CardInfoScreen extends StatefulWidget {
 }
 
 class _CardInfoScreenState extends State<CardInfoScreen> {
+  late bool isNFCDetected;
+
+  @override
+  void initState() {
+    super.initState();
+    isNFCDetected = widget.isNFCDetected;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
       Icons.arrow_back_ios_rounded: widget.page,
       'Card Name': null,
-      widget.isAdd ? 'Add' : null: _toggleAdd,
+      widget.isAdd
+          ? !widget.isCustom
+              ? 'Add'
+              : 'Save'
+          : null: !widget.isCustom ? _toggleAdd : null,
     };
 
     final screenSize = MediaQuery.of(context).size;
@@ -40,7 +51,7 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
     return Scaffold(
       appBar: CustomAppBar(menu: menu),
       body: GestureDetector(
-        onTap: widget.isNFCDetected ? _toggleAdd : null,
+        onTap: isNFCDetected ? _toggleAdd : null,
         behavior: HitTestBehavior.opaque,
         child: Stack(
           children: [
@@ -51,13 +62,13 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 200),
-              bottom: widget.isNFCDetected ? 0 : -screenSize.height * 0.4,
+              bottom: isNFCDetected ? 0 : -screenSize.height * 0.4,
               left: 0,
               right: 0,
               child: NFCBox(
                 NFCBoxWidth: screenSize.width,
                 NFCBoxHeight: screenSize.height,
-                NFCBoxVisible: widget.isNFCDetected,
+                NFCBoxVisible: isNFCDetected,
               ),
             ),
           ],
@@ -68,7 +79,7 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
 
   void _toggleAdd() {
     setState(() {
-      widget.isNFCDetected = !widget.isNFCDetected;
+      isNFCDetected = !isNFCDetected;
     });
   }
 }

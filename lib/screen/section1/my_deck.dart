@@ -20,7 +20,7 @@ class _MyDeckScreenState extends State<MyDeckScreen> {
     final Map<dynamic, dynamic> menu = {
       Icons.open_in_new_rounded: NewDeckScreen(deckName: 'New Deck'),
       'My Deck': null,
-      Icons.edit_rounded: null,
+      Icons.edit_rounded: _toggleEdit,
     };
 
     return Scaffold(
@@ -35,10 +35,19 @@ class _MyDeckScreenState extends State<MyDeckScreen> {
         ),
         itemCount: numberOfDecks,
         itemBuilder: (context, index) {
-          return Deck(name: 'Deck ${index + 1}');
+          return Deck(
+            name: 'Deck ${index + 1}',
+            isEdit: isEdit,
+          );
         },
       ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),
     );
+  }
+
+  void _toggleEdit() {
+    setState(() {
+      isEdit = !isEdit;
+    });
   }
 }

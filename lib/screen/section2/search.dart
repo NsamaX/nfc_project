@@ -6,13 +6,13 @@ import 'package:nfc_project/widget/custom/searchBar.dart';
 import 'package:nfc_project/widget/label/card.dart';
 
 class SearchScreen extends StatelessWidget {
-  final bool search;
+  final bool other;
 
-  const SearchScreen({super.key, this.search = true});
+  const SearchScreen({super.key, this.other = false});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> card_log = search
+    final List<Map<String, dynamic>> card_log = !other
         ? List.generate(30, (index) {
             final String imagePath = 'asset/image/icon_flutter.png';
             return {
@@ -55,17 +55,16 @@ class SearchScreen extends StatelessWidget {
 
     final Map<dynamic, dynamic> menu = {
       Icons.arrow_back_ios_rounded: ReadWriteScreen(),
-      search ? 'Search' : 'Other': null,
+      !other ? 'Search' : 'Other': null,
       null: null,
     };
 
     return Scaffold(
-      appBar: CustomAppBar(
-        menu: menu,
-      ),
+      appBar: CustomAppBar(menu: menu),
       body: Column(
         children: [
           CustomSearchBar(),
+          SizedBox(height: 6),
           LabelCard(
             label: card_log,
             whiteBackgrund: false,

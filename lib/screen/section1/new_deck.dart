@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/screen/section1/track.dart';
 import 'package:nfc_project/screen/card_info.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
@@ -26,7 +27,8 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
       numberOfCards > 0 ? Icons.upload_rounded : Icons.info_outline_rounded:
           null,
       widget.deckName: null,
-      numberOfCards > 0 ? Icons.play_arrow_rounded : null: null,
+      numberOfCards > 0 ? Icons.play_arrow_rounded : null:
+          TrackScreen(deckName: widget.deckName),
       'Edit': _toggleMenu,
     };
     final Map<dynamic, dynamic> menu2 = {
@@ -49,13 +51,14 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
         ),
         itemCount: numberOfCards,
         itemBuilder: (context, index) {
+          final String imagePath = 'asset/image/icon_flutter.png';
           return CustomCard(
             // imagePath: 'assets/card_image_$index.png', // ใช้หลังจากที่ทำ api เสร็จแล้ว
-            imagePath: 'asset/image/Nightrose.png',
+            imagePath: imagePath,
             initialCardCount: 1,
             isEdit: isEdit,
             page: CardInfoScreen(
-              imagePath: 'asset/image/Nightrose.png',
+              imagePath: imagePath,
               page: NewDeckScreen(
                 deckName: widget.deckName,
               ),

@@ -12,10 +12,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      margin: EdgeInsets.only(bottom: 6),
       color: Theme.of(context).primaryColor,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
         child: Row(
           children: [
             Expanded(

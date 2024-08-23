@@ -33,7 +33,10 @@ class _NFCBoxState extends State<NFCBox> {
       height: widget.NFCBoxHeight * 0.4,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(36)),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(36),
+          topRight: Radius.circular(36),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.4),

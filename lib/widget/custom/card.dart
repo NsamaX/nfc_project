@@ -41,6 +41,7 @@ class _CustomCardState extends State<CustomCard> {
     });
   }
 
+  // ignore: unused_element
   void _setZeroCardCount() {
     setState(() {
       cardCount = 0;
@@ -82,7 +83,6 @@ class _CustomCardState extends State<CustomCard> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(4),
                   width: 24,
                   height: 24,
                   decoration: BoxDecoration(
@@ -105,11 +105,11 @@ class _CustomCardState extends State<CustomCard> {
                   onPressed: _decrementCardCount,
                   context: context,
                 ),
-                _buildCircleButton(
-                  icon: Icons.delete,
-                  onPressed: _setZeroCardCount,
-                  context: context,
-                ),
+                // _buildCircleButton(
+                //   icon: Icons.delete,
+                //   onPressed: _setZeroCardCount,
+                //   context: context,
+                // ),
               ],
             ),
           ),
@@ -122,18 +122,19 @@ class _CustomCardState extends State<CustomCard> {
     required VoidCallback onPressed,
     required BuildContext context,
   }) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        margin: EdgeInsets.only(top: 4),
-        padding: EdgeInsets.all(4),
-        width: 24,
-        height: 24,
-        decoration: BoxDecoration(
-          color: Theme.of(context).appBarTheme.backgroundColor,
-          shape: BoxShape.circle,
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            color: Theme.of(context).appBarTheme.backgroundColor,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon),
         ),
-        child: Icon(icon, color: Colors.white),
       ),
     );
   }

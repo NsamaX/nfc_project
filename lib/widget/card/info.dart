@@ -10,7 +10,7 @@ class CardInfo extends StatelessWidget {
     super.key,
     this.imagePath,
     this.detail,
-    required this.isCustom,
+    this.isCustom = false,
   });
 
   @override
@@ -43,9 +43,12 @@ class CardInfo extends StatelessWidget {
               if (isCustom)
                 Icon(Icons.edit_rounded)
               else
-                Text(
-                  detail?.isEmpty ?? true ? 'No description' : detail!,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                Opacity(
+                  opacity: 0.6,
+                  child: Text(
+                    detail?.isEmpty ?? true ? 'No description' : detail!,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ),
             ],
           ),

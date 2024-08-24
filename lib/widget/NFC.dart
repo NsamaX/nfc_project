@@ -19,6 +19,12 @@ class _NFCState extends State<NFC> {
     isNFCDetected = widget.isNFCDetected;
   }
 
+  void toggleNFCStatus() {
+    setState(() {
+      isNFCDetected = !isNFCDetected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final double readIcon = 40;
@@ -27,7 +33,7 @@ class _NFCState extends State<NFC> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: _toggleNFCStatus,
+          onTap: toggleNFCStatus,
           child: Transform.translate(
             offset: Offset(readIcon + 6, 0),
             child: Transform.rotate(
@@ -46,7 +52,7 @@ class _NFCState extends State<NFC> {
           ),
         ),
         GestureDetector(
-          onTap: _toggleNFCStatus,
+          onTap: toggleNFCStatus,
           child: AnimatedContainer(
             duration: animationDuration,
             width: readIcon / 1.6,
@@ -60,7 +66,7 @@ class _NFCState extends State<NFC> {
           ),
         ),
         GestureDetector(
-          onTap: _toggleNFCStatus,
+          onTap: toggleNFCStatus,
           child: Transform.translate(
             offset: Offset(-readIcon - 6, 0),
             child: Transform.rotate(
@@ -80,11 +86,5 @@ class _NFCState extends State<NFC> {
         ),
       ],
     );
-  }
-
-  void _toggleNFCStatus() {
-    setState(() {
-      isNFCDetected = !isNFCDetected;
-    });
   }
 }

@@ -19,19 +19,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
       automaticallyImplyLeading: false,
       title: widget.menu.length == 1
           ? Center(
-              child: _buildMenuItem(
+              child: buildMenuItem(
                   widget.menu.keys.first, widget.menu.values.first),
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: widget.menu.entries
-                  .map((entry) => _buildMenuItem(entry.key, entry.value))
+                  .map((entry) => buildMenuItem(entry.key, entry.value))
                   .toList(),
             ),
     );
   }
 
-  Widget _buildMenuItem(dynamic menu, dynamic onTapFunction) {
+  Widget buildMenuItem(dynamic menu, dynamic onTapFunction) {
     final theme = Theme.of(context);
     final isTitle = menu == widget.menu.keys.elementAt(widget.menu.length ~/ 2);
 

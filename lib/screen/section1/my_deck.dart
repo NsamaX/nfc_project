@@ -15,12 +15,18 @@ class _MyDeckScreenState extends State<MyDeckScreen> {
   bool isEdit = false;
   int numberOfDecks = 4;
 
+  void toggleEdit() {
+    setState(() {
+      isEdit = !isEdit;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
       Icons.open_in_new_rounded: NewDeckScreen(deckName: 'New Deck'),
       'My Deck': null,
-      Icons.edit_rounded: _toggleEdit,
+      Icons.edit_rounded: toggleEdit,
     };
 
     return Scaffold(
@@ -43,11 +49,5 @@ class _MyDeckScreenState extends State<MyDeckScreen> {
       ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),
     );
-  }
-
-  void _toggleEdit() {
-    setState(() {
-      isEdit = !isEdit;
-    });
   }
 }

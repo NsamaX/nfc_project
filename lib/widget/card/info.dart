@@ -20,7 +20,7 @@ class CardInfo extends StatelessWidget {
       child: ListView(
         children: [
           if (isCustom || imagePath == null || imagePath!.isEmpty)
-            DashedBorderContainer(),
+            buildDottedBorder(context),
           if (!isCustom && imagePath != null && imagePath!.isNotEmpty)
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
@@ -56,11 +56,8 @@ class CardInfo extends StatelessWidget {
       ),
     );
   }
-}
 
-class DashedBorderContainer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget buildDottedBorder(BuildContext context) {
     return AspectRatio(
       aspectRatio: 3 / 4,
       child: DottedBorder(

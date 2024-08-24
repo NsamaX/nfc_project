@@ -19,10 +19,10 @@ class _LabelNormalState extends State<LabelNormal> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (category['title'] != null)
-                title(text: category['title'] as String),
-              ...category['content'].map<Widget>((item) {
-                return content(
+              if (category['buildTitle'] != null)
+                buildTitle(text: category['buildTitle'] as String),
+              ...category['buildContent'].map<Widget>((item) {
+                return buildContent(
                   icon: item['icon'],
                   text: item['text'] as String,
                   page: item['page'] as Widget?,
@@ -35,7 +35,7 @@ class _LabelNormalState extends State<LabelNormal> {
     );
   }
 
-  Widget title({required String text}) {
+  Widget buildTitle({required String text}) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, top: 16, bottom: 8),
       child: Text(
@@ -47,7 +47,8 @@ class _LabelNormalState extends State<LabelNormal> {
     );
   }
 
-  Widget content({required dynamic icon, required String text, Widget? page}) {
+  Widget buildContent(
+      {required dynamic icon, required String text, Widget? page}) {
     return GestureDetector(
       onTap: () {
         if (page != null) {
@@ -79,7 +80,7 @@ class _LabelNormalState extends State<LabelNormal> {
           padding: const EdgeInsets.only(left: 20),
           child: Row(
             children: [
-              _buildIcon(icon),
+              buildIcon(icon),
               const SizedBox(width: 12),
               Text(text, style: Theme.of(context).textTheme.bodySmall),
             ],
@@ -89,7 +90,7 @@ class _LabelNormalState extends State<LabelNormal> {
     );
   }
 
-  Widget _buildIcon(dynamic icon) {
+  Widget buildIcon(dynamic icon) {
     if (icon is IconData) {
       return Icon(icon);
     } else {

@@ -27,13 +27,13 @@ class _CustomCardState extends State<CustomCard> {
     cardCount = widget.initialCardCount;
   }
 
-  void _incrementCardCount() {
+  void incrementCardCount() {
     setState(() {
       cardCount++;
     });
   }
 
-  void _decrementCardCount() {
+  void decrementCardCount() {
     setState(() {
       if (cardCount > 0) {
         cardCount--;
@@ -42,7 +42,7 @@ class _CustomCardState extends State<CustomCard> {
   }
 
   // ignore: unused_element
-  void _setZeroCardCount() {
+  void setZeroCardCount() {
     setState(() {
       cardCount = 0;
     });
@@ -95,19 +95,19 @@ class _CustomCardState extends State<CustomCard> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                _buildCircleButton(
+                buildCircleButton(
                   icon: Icons.add,
-                  onPressed: _incrementCardCount,
+                  onPressed: incrementCardCount,
                   context: context,
                 ),
-                _buildCircleButton(
+                buildCircleButton(
                   icon: Icons.remove,
-                  onPressed: _decrementCardCount,
+                  onPressed: decrementCardCount,
                   context: context,
                 ),
-                // _buildCircleButton(
+                // buildCircleButton(
                 //   icon: Icons.delete,
-                //   onPressed: _setZeroCardCount,
+                //   onPressed: setZeroCardCount,
                 //   context: context,
                 // ),
               ],
@@ -117,7 +117,7 @@ class _CustomCardState extends State<CustomCard> {
     );
   }
 
-  Widget _buildCircleButton({
+  Widget buildCircleButton({
     required IconData icon,
     required VoidCallback onPressed,
     required BuildContext context,

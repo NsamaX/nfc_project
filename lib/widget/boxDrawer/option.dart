@@ -30,15 +30,15 @@ class _OpionBoxState extends State<OpionBox> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildItem(
+          buildItem(
             image: 'asset/image/icon_flutter.png',
             page: SearchScreen(),
           ),
-          _buildItem(
+          buildItem(
             label: 'Other',
             page: SearchScreen(other: true),
           ),
-          _buildItem(
+          buildItem(
             label: 'Custom',
             page: CardInfoScreen(
               page: ReadWriteScreen(),
@@ -46,7 +46,7 @@ class _OpionBoxState extends State<OpionBox> {
               isCustom: true,
             ),
           ),
-          _buildItem(
+          buildItem(
             label: 'Remove',
             page: null,
           ),
@@ -55,7 +55,7 @@ class _OpionBoxState extends State<OpionBox> {
     );
   }
 
-  Widget _buildItem({
+  Widget buildItem({
     String? image,
     String? label,
     Widget? page,

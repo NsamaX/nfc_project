@@ -34,6 +34,12 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
     isNFCDetected = widget.isNFCDetected;
   }
 
+  void toggleAdd() {
+    setState(() {
+      isNFCDetected = !isNFCDetected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
@@ -43,7 +49,7 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
           ? !widget.isCustom
               ? 'Add'
               : 'Save'
-          : null: !widget.isCustom ? _toggleAdd : null,
+          : null: !widget.isCustom ? toggleAdd : null,
     };
 
     final screenSize = MediaQuery.of(context).size;
@@ -51,7 +57,7 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
     return Scaffold(
       appBar: CustomAppBar(menu: menu),
       body: GestureDetector(
-        onTap: isNFCDetected ? _toggleAdd : null,
+        onTap: isNFCDetected ? toggleAdd : null,
         behavior: HitTestBehavior.opaque,
         child: Stack(
           children: [
@@ -75,11 +81,5 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
         ),
       ),
     );
-  }
-
-  void _toggleAdd() {
-    setState(() {
-      isNFCDetected = !isNFCDetected;
-    });
   }
 }

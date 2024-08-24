@@ -18,6 +18,20 @@ class _ReadWriteScreenState extends State<ReadWriteScreen> {
   bool game = false;
   bool nfc = false;
 
+  void toggleHistoryMenu() {
+    setState(() {
+      history = !history;
+      if (history) game = false;
+    });
+  }
+
+  void toggleGameMenu() {
+    setState(() {
+      game = !game;
+      if (game) history = false;
+    });
+  }
+
   final List<Map<String, dynamic>> history_log = List.generate(30, (index) {
     final String imagePath = 'asset/image/icon_flutter.png';
     return {
@@ -39,9 +53,9 @@ class _ReadWriteScreenState extends State<ReadWriteScreen> {
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
-      Icons.history_rounded: _toggleHistoryMenu,
+      Icons.history_rounded: toggleHistoryMenu,
       'Read': null,
-      Icons.handyman_rounded: _toggleGameMenu,
+      Icons.handyman_rounded: toggleGameMenu,
     };
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -86,19 +100,5 @@ class _ReadWriteScreenState extends State<ReadWriteScreen> {
       ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 1),
     );
-  }
-
-  void _toggleHistoryMenu() {
-    setState(() {
-      history = !history;
-      if (history) game = false;
-    });
-  }
-
-  void _toggleGameMenu() {
-    setState(() {
-      game = !game;
-      if (game) history = false;
-    });
   }
 }

@@ -20,23 +20,36 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
   bool isEdit = false;
   int numberOfCards = 14;
 
+  void toggleMenu() {
+    setState(() {
+      menu = !menu;
+      isEdit = !isEdit;
+    });
+  }
+
+  void toggleList() {
+    setState(() {
+      list = !list;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu1 = {
-      list ? Icons.menu_rounded : Icons.window_rounded: _toggleList,
+      list ? Icons.menu_rounded : Icons.window_rounded: toggleList,
       numberOfCards > 0 ? Icons.upload_rounded : Icons.info_outline_rounded:
           null,
       widget.deckName: null,
       numberOfCards > 0 ? Icons.play_arrow_rounded : null:
           TrackScreen(deckName: widget.deckName),
-      'Edit': _toggleMenu,
+      'Edit': toggleMenu,
     };
     final Map<dynamic, dynamic> menu2 = {
       Icons.delete_rounded: null,
       null: null,
       widget.deckName: null,
       numberOfCards.toString(): null,
-      'Save': _toggleMenu,
+      'Save': toggleMenu,
     };
 
     return Scaffold(
@@ -53,7 +66,6 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
         itemBuilder: (context, index) {
           final String imagePath = 'asset/image/icon_flutter.png';
           return CustomCard(
-            // imagePath: 'assets/card_image_$index.png', // ใช้หลังจากที่ทำ api เสร็จแล้ว
             imagePath: imagePath,
             initialCardCount: 1,
             isEdit: isEdit,
@@ -69,18 +81,5 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
       ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),
     );
-  }
-
-  void _toggleMenu() {
-    setState(() {
-      menu = !menu;
-      isEdit = !isEdit;
-    });
-  }
-
-  void _toggleList() {
-    setState(() {
-      list = !list;
-    });
   }
 }

@@ -8,7 +8,7 @@ class CustomCard extends StatefulWidget {
 
   const CustomCard({
     Key? key,
-    this.isEdit = true,
+    this.isEdit = false,
     this.card,
     this.page,
   }) : super(key: key);
@@ -64,9 +64,22 @@ class _CustomCardState extends State<CustomCard> {
                       )
                     : Container(
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        child: const Icon(
-                          Icons.image_not_supported,
-                          size: 36,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.image_not_supported,
+                                size: 36,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "No Image Available",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
               ),

@@ -31,7 +31,7 @@ class _OptionBoxState extends State<OptionBox> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           buildItem(
-            image: 'asset/image/icon_flutter.png',
+            image: 'asset/image/icon_Vanguard.png',
             page: SearchScreen(),
           ),
           buildItem(

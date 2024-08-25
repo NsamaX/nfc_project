@@ -8,35 +8,43 @@ class DeckService {
     required String game,
     required String cardName,
   }) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedCards = prefs.getStringList('user_deck');
+    final prefs = await SharedPreferences.getInstance();
+    final savedCards = prefs.getStringList('user_deck');
+
     if (savedCards != null) {
-      String lowerCaseCardName = cardName.toLowerCase().replaceAll(' ', '');
-      for (String card in savedCards) {
-        Map<String, dynamic> cardMap = jsonDecode(card);
-        Model data =
+      final lowerCaseCardName = cardName.toLowerCase().replaceAll(' ', '');
+
+      for (final card in savedCards) {
+        final cardMap = jsonDecode(card) as Map<String, dynamic>;
+        final model =
             Factory().game(game: game).fromJson(json: cardMap['model']);
-        String lowerCaseExistingCardName =
-            data.getName().toLowerCase().toLowerCase().replaceAll(' ', '');
+        final lowerCaseExistingCardName =
+            model.getName().toLowerCase().replaceAll(' ', '');
+
         if (lowerCaseExistingCardName == lowerCaseCardName) return true;
       }
     }
+
     return false;
   }
 
   Future<List<Model>> load({required String game}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedCards = prefs.getStringList('user_deck');
-    List<Model> deck = [];
-    if (savedCards != null)
-      for (String card in savedCards) {
-        Map<String, dynamic> cardMap = jsonDecode(card);
-        Model data =
+    final prefs = await SharedPreferences.getInstance();
+    final savedCards = prefs.getStringList('user_deck');
+    final List<Model> deck = [];
+
+    if (savedCards != null) {
+      for (final card in savedCards) {
+        final cardMap = jsonDecode(card) as Map<String, dynamic>;
+        final model =
             Factory().game(game: game).fromJson(json: cardMap['model']);
-        int cardCount = cardMap['cardCount'];
-        data.setCardCount(cardCount: cardCount);
-        deck.add(data);
+        final cardCount = cardMap['cardCount'] as int;
+
+        model.setCardCount(cardCount: cardCount);
+        deck.add(model);
       }
+    }
+
     return deck;
   }
 
@@ -46,15 +54,17 @@ class DeckService {
     required int cardCount,
   }) async {
     if (await check(game: game, cardName: card.getName())) return;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> savedCards = prefs.getStringList('user_deck') ?? [];
-    Map<String, dynamic> cardMap = {
+
+    final prefs = await SharedPreferences.getInstance();
+    final savedCards = prefs.getStringList('user_deck') ?? [];
+
+    final cardMap = {
       'game': game,
       'model': card.toJson(),
       'cardCount': cardCount,
     };
-    String cardJson = jsonEncode(cardMap);
-    savedCards.add(cardJson);
+
+    savedCards.add(jsonEncode(cardMap));
     await prefs.setStringList('user_deck', savedCards);
     print('saved');
   }
@@ -64,35 +74,43 @@ class DeckService {
     required Model card,
     required int cardCount,
   }) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedCards = prefs.getStringList('user_deck');
+    final prefs = await SharedPreferences.getInstance();
+    final savedCards = prefs.getStringList('user_deck');
+
     if (savedCards != null) {
       bool found = false;
+
       for (int i = 0; i < savedCards.length; i++) {
-        Map<String, dynamic> cardMap = jsonDecode(savedCards[i]);
-        Model data =
+        final cardMap = jsonDecode(savedCards[i]) as Map<String, dynamic>;
+        final model =
             Factory().game(game: game).fromJson(json: cardMap['model']);
-        if (data.getName() == card.getName()) {
+
+        if (model.getName() == card.getName()) {
           found = true;
-          data.setCardCount(cardCount: cardCount);
-          cardMap['model'] = data.toJson();
+          model.setCardCount(cardCount: cardCount);
+
+          cardMap['model'] = model.toJson();
           cardMap['cardCount'] = cardCount;
-          if (cardCount < 1)
+
+          if (cardCount < 1) {
             savedCards.removeAt(i);
-          else {
-            String updatedCardJson = jsonEncode(cardMap);
-            savedCards[i] = updatedCardJson;
+          } else {
+            savedCards[i] = jsonEncode(cardMap);
           }
+
           await prefs.setStringList('user_deck', savedCards);
           return;
         }
       }
-      if (!found) save(game: game, card: card, cardCount: cardCount);
+
+      if (!found) {
+        await save(game: game, card: card, cardCount: cardCount);
+      }
     }
   }
 
   Future<void> delete() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_deck');
   }
 }

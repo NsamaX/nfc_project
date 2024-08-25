@@ -10,6 +10,7 @@ class CardService {
   CardService({required String game}) : game = game {
     switch (game) {
       case 'cfv':
+        // https://card-fight-vanguard-api.ue.r.appspot.com
         baseUrl = "https://card-fight-vanguard-api.ue.r.appspot.com/api/v1/";
         break;
       default:

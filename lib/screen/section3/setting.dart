@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_project/screen/section0/introduction.dart';
+import 'package:nfc_project/screen/section3/tracked_cards.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
 import 'package:nfc_project/widget/label/normal.dart';
@@ -25,7 +26,7 @@ class SettingScreen extends StatelessWidget {
           {
             'icon': Icons.book_rounded,
             'text': 'Tracked cards',
-            'page': null,
+            'page': TrackedScreen(),
           },
         ]
       },

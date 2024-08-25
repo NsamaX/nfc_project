@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_project/screen/section1/track.dart';
+import 'package:nfc_project/screen/card_info.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
 import 'package:nfc_project/widget/custom/card.dart';
@@ -63,7 +64,13 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
         ),
         itemCount: numberOfCards,
         itemBuilder: (context, index) {
-          return CustomCard(isEdit: isEdit);
+          return CustomCard(
+            isEdit: isEdit,
+            page: CardInfoScreen(
+              page: NewDeckScreen(deckName: widget.deckName),
+              isAdd: false,
+            ),
+          );
         },
       ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nfc_project/api/service/deck.dart';
 import 'package:nfc_project/api/service/model.dart';
 import 'package:nfc_project/screen/section1/tracking.dart';
-import 'package:nfc_project/screen/card_info.dart';
+import 'package:nfc_project/screen/cardInfo.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
 import 'package:nfc_project/widget/custom/card.dart';

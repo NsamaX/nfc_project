@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/api/service/deck.dart';
+import 'package:nfc_project/api/service/model.dart';
 
 class NFC extends StatefulWidget {
   final bool isNFCDetected;
+  final Model? card;
 
   const NFC({
     super.key,
     this.isNFCDetected = true,
+    this.card,
   });
 
   @override
@@ -13,7 +17,7 @@ class NFC extends StatefulWidget {
 }
 
 class _NFCState extends State<NFC> {
-  final Duration animationDuration = Duration(milliseconds: 600);
+  final Duration animationDuration = const Duration(milliseconds: 600);
   late bool isNFCDetected;
 
   @override
@@ -28,6 +32,16 @@ class _NFCState extends State<NFC> {
     });
   }
 
+  Future<void> toggleAdd() async {
+    if (widget.card != null) {
+      await DeckService().save(
+        game: 'cfv',
+        card: widget.card!,
+        cardCount: 1,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double readIcon = 40;
@@ -39,7 +53,7 @@ class _NFCState extends State<NFC> {
       children: [
         buildNFCIcon(-90, rightOffset),
         GestureDetector(
-          onTap: toggleNFCStatus,
+          onTap: toggleAdd,
           child: AnimatedContainer(
             duration: animationDuration,
             width: readIcon / 1.6,
@@ -59,7 +73,7 @@ class _NFCState extends State<NFC> {
 
   Widget buildNFCIcon(double angle, Offset offset) {
     return GestureDetector(
-      onTap: toggleNFCStatus,
+      onTap: toggleAdd,
       child: Transform.translate(
         offset: offset,
         child: Transform.rotate(

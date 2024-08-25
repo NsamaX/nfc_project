@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:nfc_project/api/service/factory.dart';
 import 'package:nfc_project/api/service/model.dart';
 
-class CardService {
+class CardsService {
   final String game;
   late final String baseUrl;
 
-  CardService({required String game}) : game = game {
+  CardsService({required String game}) : game = game {
     switch (game) {
       case 'cfv':
         // https://card-fight-vanguard-api.ue.r.appspot.com

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/card_info.dart';
-import 'package:nfc_project/screen/section2/read_write.dart';
+import 'package:nfc_project/screen/cardInfo.dart';
+import 'package:nfc_project/screen/section2/readWrite.dart';
 import 'package:nfc_project/screen/section2/search.dart';
 
 class OptionBox extends StatefulWidget {

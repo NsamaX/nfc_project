@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/api/service/model.dart';
 import 'package:nfc_project/widget/NFC.dart';
 
 class NFCBox extends StatefulWidget {
   final bool NFCBoxVisible;
   final double NFCBoxWidth;
   final double NFCBoxHeight;
+  final Model? card;
 
   const NFCBox({
     Key? key,
     required this.NFCBoxVisible,
     required this.NFCBoxWidth,
     required this.NFCBoxHeight,
+    this.card,
   }) : super(key: key);
 
   @override
@@ -48,7 +51,7 @@ class _NFCBoxState extends State<NFCBox> {
           ),
         ],
       ),
-      child: const Center(child: NFC()),
+      child: Center(child: NFC(card: widget.card)),
     );
   }
 }

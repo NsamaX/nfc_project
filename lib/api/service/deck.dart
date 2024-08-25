@@ -66,7 +66,6 @@ class DeckService {
 
     savedCards.add(jsonEncode(cardMap));
     await prefs.setStringList('user_deck', savedCards);
-    print('saved');
   }
 
   Future<void> update({

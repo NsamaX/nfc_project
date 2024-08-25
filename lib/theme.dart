@@ -6,15 +6,6 @@ const Color primary2 = Color.fromARGB(255, 30, 30, 30);
 const Color primary3 = Color.fromARGB(255, 45, 45, 45);
 const Color secondary = Color.fromARGB(255, 140, 200, 255);
 
-TextStyle textStyle(double fontSize, bool isTitle) {
-  return TextStyle(
-    color: Colors.white,
-    fontSize: fontSize,
-    fontWeight: isTitle ? FontWeight.bold : FontWeight.normal,
-    fontFamily: GoogleFonts.roboto().fontFamily,
-  );
-}
-
 ThemeData themeData() {
   return ThemeData(
     scaffoldBackgroundColor: primary2,
@@ -52,5 +43,14 @@ ThemeData themeData() {
       refreshBackgroundColor: primary3,
       circularTrackColor: primary3,
     ),
+  );
+}
+
+TextStyle textStyle(double fontSize, bool isTitle) {
+  return TextStyle(
+    color: Colors.white,
+    fontSize: fontSize,
+    fontWeight: isTitle ? FontWeight.bold : FontWeight.normal,
+    fontFamily: GoogleFonts.roboto().fontFamily,
   );
 }

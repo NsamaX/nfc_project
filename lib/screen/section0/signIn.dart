@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section2/read_write.dart';
+import 'package:nfc_project/screen/section2/readWrite.dart';
 import 'package:nfc_project/widget/introduction.dart';
 
 class SignInScreen extends StatelessWidget {

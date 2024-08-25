@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/new_deck.dart';
+import 'package:nfc_project/screen/section1/newDeck.dart';
 import 'package:nfc_project/widget/card/deck.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';

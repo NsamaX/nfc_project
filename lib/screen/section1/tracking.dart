@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/new_deck.dart';
-import 'package:nfc_project/screen/card_info.dart';
+import 'package:nfc_project/screen/section1/newDeck.dart';
+import 'package:nfc_project/screen/cardInfo.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/label/card.dart';
 
-class TrackScreen extends StatelessWidget {
+class TrackingScreen extends StatelessWidget {
   final String deckName;
   final int numberOfCards = 1;
 
-  const TrackScreen({super.key, required this.deckName});
+  const TrackingScreen({super.key, required this.deckName});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TrackScreen extends StatelessWidget {
           itemCount: numberOfCards,
           itemBuilder: (context, index) => LabelCard(
             page: CardInfoScreen(
-              page: TrackScreen(deckName: deckName),
+              page: TrackingScreen(deckName: deckName),
               isAdd: false,
             ),
           ),

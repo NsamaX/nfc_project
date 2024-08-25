@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/my_deck.dart';
-import 'package:nfc_project/screen/section2/read_write.dart';
+import 'package:nfc_project/screen/section1/myDeck.dart';
+import 'package:nfc_project/screen/section2/readWrite.dart';
 import 'package:nfc_project/screen/section3/setting.dart';
 
 class CustomBottomNavigation extends StatefulWidget {

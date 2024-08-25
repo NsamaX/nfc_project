@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/api/service/deck.dart';
+import 'package:nfc_project/api/service/model.dart';
 import 'package:nfc_project/screen/section3/setting.dart';
-import 'package:nfc_project/screen/card_info.dart';
+import 'package:nfc_project/screen/cardInfo.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
 import 'package:nfc_project/widget/custom/card.dart';
 
-class TrackedScreen extends StatelessWidget {
+class TrackedScreen extends StatefulWidget {
   const TrackedScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    int numberOfCards = 10;
+  State<TrackedScreen> createState() => _TrackedScreenState();
+}
 
+class _TrackedScreenState extends State<TrackedScreen> {
+  List<Model> trackedCards = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadTrackedCards();
+  }
+
+  Future<void> loadTrackedCards() async {
+    final cards = await DeckService().load(game: 'cfv');
+    setState(() {
+      trackedCards = cards;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
       Icons.arrow_back_ios_rounded: SettingScreen(),
       'Tracked': null,
@@ -28,10 +48,15 @@ class TrackedScreen extends StatelessWidget {
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),
-        itemCount: numberOfCards,
+        itemCount: trackedCards.length,
         itemBuilder: (context, index) {
           return CustomCard(
-            page: CardInfoScreen(page: TrackedScreen()),
+            card: trackedCards[index],
+            page: CardInfoScreen(
+              card: trackedCards[index],
+              page: TrackedScreen(),
+              isAdd: false,
+            ),
           );
         },
       ),

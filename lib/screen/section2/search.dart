@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/card.dart';
+import 'package:nfc_project/api/service/cards.dart';
 import 'package:nfc_project/api/service/model.dart';
-import 'package:nfc_project/screen/section2/read_write.dart';
-import 'package:nfc_project/screen/card_info.dart';
+import 'package:nfc_project/screen/section2/readWrite.dart';
+import 'package:nfc_project/screen/cardInfo.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/searchBar.dart';
 import 'package:nfc_project/widget/label/card.dart';
@@ -53,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       isLoading = true;
     });
-    List<Model> fetchedData = await CardService(game: 'cfv')
+    List<Model> fetchedData = await CardsService(game: 'cfv')
         .getData(game: 'cfv', search: search + page.toString());
     if (!mounted) return;
     setState(() {

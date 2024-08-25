@@ -18,7 +18,13 @@ class CustomCard extends StatefulWidget {
 }
 
 class _CustomCardState extends State<CustomCard> {
-  int cardCount = 0;
+  late int cardCount;
+
+  @override
+  void initState() {
+    super.initState();
+    cardCount = widget.card != null ? widget.card!.getCardCount() : 0;
+  }
 
   void incrementCardCount() {
     setState(() {

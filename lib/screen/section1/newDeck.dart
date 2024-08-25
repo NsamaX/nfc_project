@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/track.dart';
+import 'package:nfc_project/api/service/deck.dart';
+import 'package:nfc_project/api/service/model.dart';
+import 'package:nfc_project/screen/section1/tracking.dart';
 import 'package:nfc_project/screen/card_info.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
@@ -18,7 +20,20 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
   bool menu = true;
   bool list = false;
   bool isEdit = false;
-  int numberOfCards = 10;
+  List<Model> deck = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadDeck();
+  }
+
+  Future<void> loadDeck() async {
+    final cards = await DeckService().load(game: 'cfv');
+    setState(() {
+      deck = cards;
+    });
+  }
 
   void toggleMenu() {
     setState(() {
@@ -37,18 +52,17 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu1 = {
       list ? Icons.menu_rounded : Icons.window_rounded: toggleList,
-      numberOfCards > 0 ? Icons.upload_rounded : Icons.info_outline_rounded:
-          null,
+      deck.length > 0 ? Icons.upload_rounded : Icons.info_outline_rounded: null,
       widget.deckName: null,
-      numberOfCards > 0 ? Icons.play_arrow_rounded : null:
-          TrackScreen(deckName: widget.deckName),
+      deck.length > 0 ? Icons.play_arrow_rounded : null:
+          TrackingScreen(deckName: widget.deckName),
       'Edit': toggleMenu,
     };
     final Map<dynamic, dynamic> menu2 = {
       Icons.delete_rounded: null,
       null: null,
       widget.deckName: null,
-      numberOfCards.toString(): null,
+      deck.length.toString(): null,
       'Save': toggleMenu,
     };
 
@@ -62,11 +76,13 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),
-        itemCount: numberOfCards,
+        itemCount: deck.length,
         itemBuilder: (context, index) {
           return CustomCard(
             isEdit: isEdit,
+            card: deck[index],
             page: CardInfoScreen(
+              card: deck[index],
               page: NewDeckScreen(deckName: widget.deckName),
               isAdd: false,
             ),

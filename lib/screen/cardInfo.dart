@@ -70,6 +70,7 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
                 NFCBoxVisible: isNFCDetected,
                 NFCBoxWidth: screenSize.width,
                 NFCBoxHeight: screenSize.height,
+                card: widget.card,
               ),
             ),
           ],

@@ -1,4 +1,4 @@
-import 'package:nfc_project/api/game/model.dart';
+import 'package:nfc_project/api/service/model.dart';
 
 class CFV extends Model {
   final int? id;
@@ -171,8 +171,11 @@ class CFV extends Model {
       };
 
   @override
-  String getImage() => imageUrlJp ?? '';
+  String getImagePath() => imageUrlJp ?? '';
   String getName() => name ?? '';
+  String getDescription() => format ?? '';
+
+  @override
   Map<String, dynamic> getMap() {
     var properties = {
       'Name': name,

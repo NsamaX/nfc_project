@@ -42,14 +42,15 @@ ThemeData themeData() {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.white),
-        foregroundColor: MaterialStateProperty.all(Colors.black),
-        textStyle: MaterialStateProperty.all(textStyle(20, true)),
+        backgroundColor: WidgetStateProperty.all(Colors.white),
+        foregroundColor: WidgetStateProperty.all(Colors.black),
+        textStyle: WidgetStateProperty.all(textStyle(20, true)),
       ),
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: secondary,
-        refreshBackgroundColor: primary3,
-        circularTrackColor: primary3),
+      color: secondary,
+      refreshBackgroundColor: primary3,
+      circularTrackColor: primary3,
+    ),
   );
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_project/screen/section1/track.dart';
-import 'package:nfc_project/screen/card_info.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 import 'package:nfc_project/widget/custom/bottomNav.dart';
 import 'package:nfc_project/widget/custom/card.dart';
@@ -18,7 +17,7 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
   bool menu = true;
   bool list = false;
   bool isEdit = false;
-  int numberOfCards = 14;
+  int numberOfCards = 10;
 
   void toggleMenu() {
     setState(() {
@@ -64,19 +63,7 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
         ),
         itemCount: numberOfCards,
         itemBuilder: (context, index) {
-          final String imagePath = 'asset/image/icon_flutter.png';
-          return CustomCard(
-            imagePath: imagePath,
-            initialCardCount: 1,
-            isEdit: isEdit,
-            page: CardInfoScreen(
-              imagePath: imagePath,
-              page: NewDeckScreen(
-                deckName: widget.deckName,
-              ),
-              isAdd: false,
-            ),
-          );
+          return CustomCard(isEdit: isEdit);
         },
       ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),

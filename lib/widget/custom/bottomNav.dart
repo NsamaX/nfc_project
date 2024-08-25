@@ -14,43 +14,35 @@ class CustomBottomNavigation extends StatefulWidget {
 }
 
 class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
+  final List<Widget> pages = [
+    MyDeckScreen(),
+    ReadWriteScreen(),
+    SettingScreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: [
-        navigation('My Deck', Icons.web_stories_rounded),
-        navigation('Read', Icons.insert_page_break_outlined),
-        navigation('Setting', Icons.settings_rounded)
+        navigationItem('My Deck', Icons.web_stories_rounded),
+        navigationItem('Read', Icons.insert_page_break_outlined),
+        navigationItem('Setting', Icons.settings_rounded),
       ],
       currentIndex: widget.currentIndex,
-      onTap: (index) => navigate(context: context, index: index),
+      onTap: (index) => navigateToPage(index),
     );
   }
 
-  BottomNavigationBarItem navigation(String label, IconData iconData) {
+  BottomNavigationBarItem navigationItem(String label, IconData iconData) {
     return BottomNavigationBarItem(icon: Icon(iconData), label: label);
   }
 
-  void navigate({required BuildContext context, required int index}) {
-    Widget page;
-
-    switch (index) {
-      case 0:
-        page = MyDeckScreen();
-        break;
-      case 1:
-        page = ReadWriteScreen();
-        break;
-      case 2:
-        page = SettingScreen();
-        break;
-      default:
-        page = Container();
+  void navigateToPage(int index) {
+    if (index < pages.length) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => pages[index]),
+      );
     }
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
   }
 }

@@ -19,9 +19,9 @@ class _LabelNormalState extends State<LabelNormal> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (category['buildTitle'] != null)
-                buildTitle(text: category['buildTitle'] as String),
-              ...category['buildContent'].map<Widget>((item) {
+              if (category['title'] != null)
+                buildTitle(text: category['title'] as String),
+              ...category['content'].map<Widget>((item) {
                 return buildContent(
                   icon: item['icon'],
                   text: item['text'] as String,
@@ -40,15 +40,19 @@ class _LabelNormalState extends State<LabelNormal> {
       padding: const EdgeInsets.only(left: 20, top: 16, bottom: 8),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).secondaryHeaderColor,
-            ),
+        style: Theme.of(context)
+            .textTheme
+            .bodyMedium
+            ?.copyWith(color: Theme.of(context).secondaryHeaderColor),
       ),
     );
   }
 
-  Widget buildContent(
-      {required dynamic icon, required String text, Widget? page}) {
+  Widget buildContent({
+    required dynamic icon,
+    required String text,
+    Widget? page,
+  }) {
     return GestureDetector(
       onTap: () {
         if (page != null) {
@@ -69,18 +73,19 @@ class _LabelNormalState extends State<LabelNormal> {
       child: Container(
         height: 40,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).appBarTheme.backgroundColor,
           border: Border(
             bottom: BorderSide(
-                color: Theme.of(context).iconTheme.color!.withOpacity(0.6),
-                width: 1),
+              color: Colors.white.withOpacity(0.6),
+              width: 1,
+            ),
           ),
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Row(
             children: [
-              buildIcon(icon),
+              Icon(icon),
               const SizedBox(width: 12),
               Text(text, style: Theme.of(context).textTheme.bodySmall),
             ],
@@ -88,13 +93,5 @@ class _LabelNormalState extends State<LabelNormal> {
         ),
       ),
     );
-  }
-
-  Widget buildIcon(dynamic icon) {
-    if (icon is IconData) {
-      return Icon(icon);
-    } else {
-      return const SizedBox.shrink();
-    }
   }
 }

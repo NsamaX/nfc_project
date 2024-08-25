@@ -1,12 +1,13 @@
-abstract class Model extends NumberOfCard implements CardInfo {
+abstract class Model extends NumberOfCard implements CardInfomation {
   Model();
   Model fromJson({required Map<String, dynamic> json});
   Map<String, dynamic> toJson();
 }
 
-abstract class CardInfo {
-  String getImage();
+abstract class CardInfomation {
+  String getImagePath();
   String getName();
+  String getDescription();
   Map<String, dynamic> getMap();
 }
 

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/screen/section2/read_write.dart';
+import 'package:nfc_project/screen/card_info.dart';
 import 'package:nfc_project/widget/label/card.dart';
 
 class HistoryBox extends StatefulWidget {
-  final List<Map<String, dynamic>> historyLog;
-  final double historyBoxHeight;
   final bool historyBoxVisible;
+  final double historyBoxHeight;
 
   const HistoryBox({
     Key? key,
-    required this.historyLog,
-    required this.historyBoxHeight,
     required this.historyBoxVisible,
+    required this.historyBoxHeight,
   }) : super(key: key);
 
   @override
@@ -18,8 +18,8 @@ class HistoryBox extends StatefulWidget {
 }
 
 class _HistoryBoxState extends State<HistoryBox> {
-  final double historyBoxWidth = 260;
-  final Duration animationDuration = const Duration(milliseconds: 200);
+  static const Duration animationDuration = Duration(milliseconds: 200);
+  static const double historyBoxWidth = 260;
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +34,24 @@ class _HistoryBoxState extends State<HistoryBox> {
       height: widget.historyBoxHeight,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(16),
-          bottomRight: Radius.circular(16),
-        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.4),
             spreadRadius: 2,
             blurRadius: 6,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: LabelCard(label: widget.historyLog),
+      child: ListView.builder(
+        itemCount: 30,
+        itemBuilder: (context, index) {
+          return const LabelCard(
+            darkTheme: false,
+            page: CardInfoScreen(page: ReadWriteScreen()),
+          );
+        },
+      ),
     );
   }
 }

@@ -33,7 +33,6 @@ flutter:
     - asset/image/icon_flutter.png
     - asset/image/icon_google.png
     - asset/image/icon_Vanguard.png
-    - asset/image/Nightrose.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

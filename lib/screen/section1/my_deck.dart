@@ -13,7 +13,7 @@ class MyDeckScreen extends StatefulWidget {
 
 class _MyDeckScreenState extends State<MyDeckScreen> {
   bool isEdit = false;
-  int numberOfDecks = 4;
+  final int deck = 0;
 
   void toggleEdit() {
     setState(() {
@@ -26,7 +26,7 @@ class _MyDeckScreenState extends State<MyDeckScreen> {
     final Map<dynamic, dynamic> menu = {
       Icons.open_in_new_rounded: NewDeckScreen(deckName: 'New Deck'),
       'My Deck': null,
-      Icons.edit_rounded: toggleEdit,
+      Icons.edit_rounded: deck > 0 ? toggleEdit : null,
     };
 
     return Scaffold(
@@ -39,11 +39,11 @@ class _MyDeckScreenState extends State<MyDeckScreen> {
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),
-        itemCount: numberOfDecks,
+        itemCount: deck,
         itemBuilder: (context, index) {
           return Deck(
-            name: 'Deck ${index + 1}',
             isEdit: isEdit,
+            deckName: 'Deck ${index + 1}',
           );
         },
       ),

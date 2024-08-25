@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/card_info.dart';
 import 'package:nfc_project/widget/boxDrawer/history.dart';
 import 'package:nfc_project/widget/boxDrawer/option.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
@@ -14,48 +13,30 @@ class ReadWriteScreen extends StatefulWidget {
 }
 
 class _ReadWriteScreenState extends State<ReadWriteScreen> {
-  bool history = false;
-  bool game = false;
   bool nfc = false;
+  bool history = false;
+  bool option = false;
 
   void toggleHistoryMenu() {
     setState(() {
       history = !history;
-      if (history) game = false;
+      if (history) option = false;
     });
   }
 
-  void toggleGameMenu() {
+  void toggleOptionMenu() {
     setState(() {
-      game = !game;
-      if (game) history = false;
+      option = !option;
+      if (option) history = false;
     });
   }
-
-  final List<Map<String, dynamic>> history_log = List.generate(30, (index) {
-    final String imagePath = 'asset/image/icon_flutter.png';
-    return {
-      'name': 'Card name ${index + 1}',
-      'content': [
-        {
-          'image': imagePath,
-          'detail': 'Description',
-          'page': CardInfoScreen(
-            imagePath: imagePath,
-            page: ReadWriteScreen(),
-            isAdd: true,
-          ),
-        },
-      ]
-    };
-  });
 
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
       Icons.history_rounded: toggleHistoryMenu,
       'Read': null,
-      Icons.handyman_rounded: toggleGameMenu,
+      Icons.handyman_rounded: toggleOptionMenu,
     };
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -63,10 +44,10 @@ class _ReadWriteScreenState extends State<ReadWriteScreen> {
       appBar: CustomAppBar(menu: menu),
       body: GestureDetector(
         onTap: () {
-          if (history || game) {
+          if (history || option) {
             setState(() {
               history = false;
-              game = false;
+              option = false;
             });
           }
         },
@@ -74,26 +55,21 @@ class _ReadWriteScreenState extends State<ReadWriteScreen> {
         child: Stack(
           children: [
             Center(
-              child: NFC(
-                isNFCDetected: nfc,
-              ),
+              child: NFC(isNFCDetected: nfc),
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 200),
               left: history ? 0 : -100,
               child: HistoryBox(
-                historyLog: history_log,
-                historyBoxHeight: screenHeight,
                 historyBoxVisible: history,
+                historyBoxHeight: screenHeight,
               ),
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 200),
               top: 20,
-              right: game ? 0 : -100,
-              child: OpionBox(
-                optionBoxVisible: game,
-              ),
+              right: option ? 0 : -100,
+              child: OptionBox(optionBoxVisible: option),
             ),
           ],
         ),

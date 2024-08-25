@@ -1,5 +1,5 @@
 import 'package:nfc_project/api/game/cfv.dart';
-import 'package:nfc_project/api/game/model.dart';
+import 'package:nfc_project/api/service/model.dart';
 
 class Factory {
   Model game({required String game}) {

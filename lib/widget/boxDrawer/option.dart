@@ -3,20 +3,20 @@ import 'package:nfc_project/screen/card_info.dart';
 import 'package:nfc_project/screen/section2/read_write.dart';
 import 'package:nfc_project/screen/section2/search.dart';
 
-class OpionBox extends StatefulWidget {
+class OptionBox extends StatefulWidget {
   final bool optionBoxVisible;
 
-  const OpionBox({Key? key, required this.optionBoxVisible}) : super(key: key);
+  const OptionBox({Key? key, required this.optionBoxVisible}) : super(key: key);
 
   @override
-  _OpionBoxState createState() => _OpionBoxState();
+  _OptionBoxState createState() => _OptionBoxState();
 }
 
-class _OpionBoxState extends State<OpionBox> {
-  final double boxSize = 50;
-  final double spacing = 16;
-  final BorderRadius borderRadius = BorderRadius.circular(8);
-  final Duration animationDuration = const Duration(milliseconds: 200);
+class _OptionBoxState extends State<OptionBox> {
+  static final Duration animationDuration = Duration(milliseconds: 200);
+  static final BorderRadius borderRadius = BorderRadius.circular(8);
+  static const double boxSize = 50;
+  static const double spacing = 16;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,6 @@ class _OpionBoxState extends State<OpionBox> {
             label: 'Custom',
             page: CardInfoScreen(
               page: ReadWriteScreen(),
-              isAdd: true,
               isCustom: true,
             ),
           ),
@@ -61,7 +60,7 @@ class _OpionBoxState extends State<OpionBox> {
     Widget? page,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: spacing),
+      padding: const EdgeInsets.only(bottom: spacing),
       child: GestureDetector(
         onTap: () {
           if (page != null) {

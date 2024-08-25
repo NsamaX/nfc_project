@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:nfc_project/screen/section1/new_deck.dart';
 
 class Deck extends StatelessWidget {
-  final String name;
   final bool isEdit;
+  final String deckName;
 
   const Deck({
     super.key,
-    required this.name,
     required this.isEdit,
+    required this.deckName,
   });
 
   @override
@@ -20,18 +20,19 @@ class Deck extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => NewDeckScreen(deckName: name)),
+                builder: (context) => NewDeckScreen(deckName: deckName),
+              ),
             );
           },
           child: Container(
-            margin: EdgeInsets.all(6),
-            padding: EdgeInsets.all(6),
+            margin: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: Theme.of(context).appBarTheme.backgroundColor,
               borderRadius: BorderRadius.circular(8),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black,
                   blurRadius: 4,
                   offset: Offset(2, 2),
                 ),
@@ -39,7 +40,7 @@ class Deck extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                name,
+                deckName,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
@@ -58,7 +59,7 @@ class Deck extends StatelessWidget {
                   color: Theme.of(context).scaffoldBackgroundColor,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.remove_rounded),
+                child: const Icon(Icons.remove_rounded),
               ),
             ),
           ),

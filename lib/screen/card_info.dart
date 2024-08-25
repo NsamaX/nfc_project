@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/api/service/model.dart';
 import 'package:nfc_project/widget/boxDrawer/NFC.dart';
 import 'package:nfc_project/widget/card/info.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
 
 class CardInfoScreen extends StatefulWidget {
-  final String? imagePath;
-  final String? detail;
+  final Model? card;
   final Widget page;
   final bool isAdd;
   final bool isCustom;
@@ -13,8 +13,7 @@ class CardInfoScreen extends StatefulWidget {
 
   const CardInfoScreen({
     super.key,
-    this.imagePath,
-    this.detail,
+    this.card,
     required this.page,
     this.isAdd = true,
     this.isCustom = false,
@@ -34,7 +33,7 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
     isNFCDetected = widget.isNFCDetected;
   }
 
-  void toggleAdd() {
+  void toggleNFCDetection() {
     setState(() {
       isNFCDetected = !isNFCDetected;
     });
@@ -45,11 +44,8 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
     final Map<dynamic, dynamic> menu = {
       Icons.arrow_back_ios_rounded: widget.page,
       'Card Name': null,
-      widget.isAdd
-          ? !widget.isCustom
-              ? 'Add'
-              : 'Save'
-          : null: !widget.isCustom ? toggleAdd : null,
+      widget.isAdd ? (widget.isCustom ? 'Save' : 'Add') : null:
+          (widget.isCustom ? null : toggleNFCDetection),
     };
 
     final screenSize = MediaQuery.of(context).size;
@@ -57,24 +53,23 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
     return Scaffold(
       appBar: CustomAppBar(menu: menu),
       body: GestureDetector(
-        onTap: isNFCDetected ? toggleAdd : null,
+        onTap: isNFCDetected ? toggleNFCDetection : null,
         behavior: HitTestBehavior.opaque,
         child: Stack(
           children: [
             CardInfo(
-              imagePath: widget.imagePath,
-              detail: widget.detail,
               isCustom: widget.isCustom,
+              card: widget.card,
             ),
             AnimatedPositioned(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               bottom: isNFCDetected ? 0 : -screenSize.height * 0.4,
               left: 0,
               right: 0,
               child: NFCBox(
+                NFCBoxVisible: isNFCDetected,
                 NFCBoxWidth: screenSize.width,
                 NFCBoxHeight: screenSize.height,
-                NFCBoxVisible: isNFCDetected,
               ),
             ),
           ],

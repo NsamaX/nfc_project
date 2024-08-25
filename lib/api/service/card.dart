@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:nfc_project/api/game/factory.dart';
-import 'package:nfc_project/api/game/model.dart';
+import 'package:nfc_project/api/service/factory.dart';
+import 'package:nfc_project/api/service/model.dart';
 
 class CardService {
   final String game;
@@ -17,15 +17,15 @@ class CardService {
     }
   }
 
-  Future<List<Model>> getData(
-      {required String game, required String search}) async {
-    baseUrl += search;
-    http.Response response = await http.get(Uri.parse(baseUrl));
+  Future<List<Model>> getData({
+    required String game,
+    required String search,
+  }) async {
+    http.Response response = await http.get(Uri.parse(baseUrl + search));
     try {
       if (response.statusCode == 200) {
         List<dynamic> jsonData = jsonDecode(response.body)['data'];
-        List<Model> fetchedData = [];
-        fetchedData = jsonData
+        List<Model> fetchedData = jsonData
             .map((e) => Factory().game(game: game).fromJson(json: e))
             .toList();
         switch (game) {

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_project/api/service/model.dart';
 
 class CustomCard extends StatefulWidget {
-  final String imagePath;
-  final int initialCardCount;
   final bool isEdit;
-  final Widget page;
+  final Model? card;
+  final Widget? page;
 
   const CustomCard({
     Key? key,
-    required this.imagePath,
-    required this.initialCardCount,
-    required this.isEdit,
-    required this.page,
+    this.isEdit = true,
+    this.card,
+    this.page,
   }) : super(key: key);
 
   @override
@@ -19,13 +18,7 @@ class CustomCard extends StatefulWidget {
 }
 
 class _CustomCardState extends State<CustomCard> {
-  late int cardCount;
-
-  @override
-  void initState() {
-    super.initState();
-    cardCount = widget.initialCardCount;
-  }
+  int cardCount = 0;
 
   void incrementCardCount() {
     setState(() {
@@ -34,18 +27,11 @@ class _CustomCardState extends State<CustomCard> {
   }
 
   void decrementCardCount() {
-    setState(() {
-      if (cardCount > 0) {
+    if (cardCount > 0) {
+      setState(() {
         cardCount--;
-      }
-    });
-  }
-
-  // ignore: unused_element
-  void setZeroCardCount() {
-    setState(() {
-      cardCount = 0;
-    });
+      });
+    }
   }
 
   @override
@@ -54,10 +40,12 @@ class _CustomCardState extends State<CustomCard> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => widget.page),
-            );
+            if (widget.page != null) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => widget.page!),
+              );
+            }
           },
           child: AspectRatio(
             aspectRatio: 3 / 4,
@@ -68,10 +56,19 @@ class _CustomCardState extends State<CustomCard> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  widget.imagePath,
-                  fit: BoxFit.cover,
-                ),
+                child: widget.card != null &&
+                        widget.card!.getImagePath().isNotEmpty
+                    ? Image.network(
+                        widget.card!.getImagePath(),
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        child: const Icon(
+                          Icons.image_not_supported,
+                          size: 36,
+                        ),
+                      ),
               ),
             ),
           ),
@@ -82,34 +79,15 @@ class _CustomCardState extends State<CustomCard> {
             right: 0,
             child: Column(
               children: [
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).appBarTheme.backgroundColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '$cardCount',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+                buildCardCountDisplay(context),
                 buildCircleButton(
                   icon: Icons.add,
                   onPressed: incrementCardCount,
-                  context: context,
                 ),
                 buildCircleButton(
                   icon: Icons.remove,
                   onPressed: decrementCardCount,
-                  context: context,
                 ),
-                // buildCircleButton(
-                //   icon: Icons.delete,
-                //   onPressed: setZeroCardCount,
-                //   context: context,
-                // ),
               ],
             ),
           ),
@@ -117,10 +95,27 @@ class _CustomCardState extends State<CustomCard> {
     );
   }
 
+  Widget buildCardCountDisplay(BuildContext context) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          '$cardCount',
+          style: Theme.of(context).textTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   Widget buildCircleButton({
     required IconData icon,
     required VoidCallback onPressed,
-    required BuildContext context,
   }) {
     return Padding(
       padding: const EdgeInsets.only(top: 4),
@@ -130,10 +125,13 @@ class _CustomCardState extends State<CustomCard> {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: Theme.of(context).appBarTheme.backgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             shape: BoxShape.circle,
           ),
-          child: Icon(icon),
+          child: Icon(
+            icon,
+            size: 16,
+          ),
         ),
       ),
     );

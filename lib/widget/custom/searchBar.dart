@@ -12,47 +12,45 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).appBarTheme.backgroundColor,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
+        padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 6),
         child: Row(
           children: [
             Expanded(
-              child: SizedBox(
-                height: 30,
-                child: TextField(
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    hintText: 'Search...',
-                    hintStyle: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.black),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+              child: TextField(
+                style: Theme.of(context).textTheme.bodyMedium,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    size: 20,
+                    color: Colors.black,
                   ),
+                  hintText: 'Search...',
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: Colors.black),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                 ),
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             TextButton(
               onPressed: () {
                 FocusScope.of(context).unfocus();
               },
               child: Text(
                 'Cancel',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).secondaryHeaderColor,
-                    ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Theme.of(context).secondaryHeaderColor),
               ),
             ),
           ],

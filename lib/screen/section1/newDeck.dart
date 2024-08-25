@@ -35,6 +35,20 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
     });
   }
 
+  void delete() {
+    if (deck.isEmpty) return;
+    DeckService().delete().then(
+      (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Deleted deck successfully')),
+        );
+        setState(() {
+          deck = [];
+        });
+      },
+    );
+  }
+
   void toggleMenu() {
     setState(() {
       menu = !menu;
@@ -59,7 +73,7 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
       'Edit': toggleMenu,
     };
     final Map<dynamic, dynamic> menu2 = {
-      Icons.delete_rounded: null,
+      Icons.delete_rounded: delete,
       null: null,
       widget.deckName: null,
       deck.length.toString(): null,

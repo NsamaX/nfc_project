@@ -15,7 +15,7 @@ class TrackedScreen extends StatefulWidget {
 }
 
 class _TrackedScreenState extends State<TrackedScreen> {
-  final bool TestSystem = false;
+  final bool TestSystem = true;
   List<Model> Tags = [];
 
   @override

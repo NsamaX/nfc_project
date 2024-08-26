@@ -115,7 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   card: card,
                   page: CardInfoScreen(
                     card: card,
-                    page: SearchScreen(),
+                    page: SearchScreen(game: widget.game),
                   ),
                 );
               },

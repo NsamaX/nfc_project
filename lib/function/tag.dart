@@ -18,6 +18,7 @@ class TagService {
       'tagId': _uuid.v4(),
       'game': game,
       'model': card.toJson(),
+      'time': DateTime.now().toIso8601String(),
     };
 
     savedTags.add(jsonEncode(cardMap));
@@ -27,25 +28,33 @@ class TagService {
   Future<List<Model>> load({required String game}) async {
     final prefs = await SharedPreferences.getInstance();
     final savedTags = prefs.getStringList('tag_card');
+    final List<Map<String, dynamic>> cardMaps = [];
     final List<Model> tags = [];
 
     if (savedTags != null) {
-      final Set<String> uniqueCardNames = {};
-
       for (final tag in savedTags) {
         try {
           final cardMap = jsonDecode(tag) as Map<String, dynamic>;
-          final model =
-              Factory().game(game: game).fromJson(json: cardMap['model']);
-          final lowerCaseCardName =
-              model.getName().toLowerCase().replaceAll(' ', '');
-
-          if (!uniqueCardNames.contains(lowerCaseCardName)) {
-            uniqueCardNames.add(lowerCaseCardName);
-            tags.add(model);
-          }
+          cardMaps.add(cardMap);
         } catch (e) {
           print('Error loading tag: $e');
+        }
+      }
+
+      cardMaps.sort((a, b) =>
+          DateTime.parse(b['time']).compareTo(DateTime.parse(a['time'])));
+
+      final Set<String> uniqueCardNames = {};
+
+      for (final cardMap in cardMaps) {
+        final model =
+            Factory().game(game: game).fromJson(json: cardMap['model']);
+        final lowerCaseCardName =
+            model.getName().toLowerCase().replaceAll(' ', '');
+
+        if (!uniqueCardNames.contains(lowerCaseCardName)) {
+          uniqueCardNames.add(lowerCaseCardName);
+          tags.add(model);
         }
       }
     }
@@ -62,11 +71,15 @@ class TagService {
     final prefs = await SharedPreferences.getInstance();
     final savedTags = prefs.getStringList('tag_card') ?? [];
 
-    savedTags.removeWhere((tag) {
-      final cardMap = jsonDecode(tag) as Map<String, dynamic>;
-      return cardMap['tagId'] == tagId;
-    });
+    try {
+      savedTags.removeWhere((tag) {
+        final cardMap = jsonDecode(tag) as Map<String, dynamic>;
+        return cardMap['tagId'] == tagId;
+      });
 
-    await prefs.setStringList('tag_card', savedTags);
+      await prefs.setStringList('tag_card', savedTags);
+    } catch (e) {
+      print('Error deleting specific card: $e');
+    }
   }
 }

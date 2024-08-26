@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/deck.dart';
+import 'package:nfc_project/function/deck.dart';
 import 'package:nfc_project/api/service/model.dart';
 import 'package:nfc_project/screen/section1/tracking.dart';
 import 'package:nfc_project/screen/cardInfo.dart';
@@ -22,6 +22,8 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
   bool isEdit = false;
   List<Model> deck = [];
 
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -29,15 +31,28 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
   }
 
   Future<void> loadDeck() async {
-    final cards = await DeckService().load(game: 'cfv');
     setState(() {
-      deck = cards;
+      isLoading = true;
     });
+    try {
+      final cards = await DeckService(game: 'cfv').load();
+      setState(() {
+        deck = cards;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load deck: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void delete() {
     if (deck.isEmpty) return;
-    DeckService().delete().then(
+    DeckService(game: 'cfv').delete().then(
       (_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Deleted deck successfully')),
@@ -46,7 +61,11 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
           deck = [];
         });
       },
-    );
+    ).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete deck: $e')),
+      );
+    });
   }
 
   void toggleMenu() {
@@ -82,27 +101,29 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(menu: menu ? menu1 : menu2),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 3 / 4,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemCount: deck.length,
-        itemBuilder: (context, index) {
-          return CustomCard(
-            isEdit: isEdit,
-            card: deck[index],
-            page: CardInfoScreen(
-              card: deck[index],
-              page: NewDeckScreen(deckName: widget.deckName),
-              isAdd: false,
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 3 / 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: deck.length,
+              itemBuilder: (context, index) {
+                return CustomCard(
+                  isEdit: isEdit,
+                  card: deck[index],
+                  page: CardInfoScreen(
+                    card: deck[index],
+                    page: NewDeckScreen(deckName: widget.deckName),
+                    isAdd: false,
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),
     );
   }

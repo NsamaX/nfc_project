@@ -18,6 +18,22 @@ class _OptionBoxState extends State<OptionBox> {
   static const double boxSize = 50;
   static const double spacing = 16;
 
+  final String game = 'cfv';
+  late String imagePath;
+
+  @override
+  void initState() {
+    super.initState();
+
+    switch (game) {
+      case 'cfv':
+        imagePath = 'asset/image/icon_Vanguard.png';
+        break;
+      default:
+        imagePath = 'asset/image/icon_flutter.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
@@ -31,12 +47,12 @@ class _OptionBoxState extends State<OptionBox> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           buildItem(
-            image: 'asset/image/icon_Vanguard.png',
-            page: SearchScreen(),
+            image: imagePath,
+            page: SearchScreen(game: game),
           ),
           buildItem(
             label: 'Other',
-            page: SearchScreen(other: true),
+            page: SearchScreen(),
           ),
           buildItem(
             label: 'Custom',

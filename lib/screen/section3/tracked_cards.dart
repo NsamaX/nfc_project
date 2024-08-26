@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/deck.dart';
 import 'package:nfc_project/api/service/model.dart';
+import 'package:nfc_project/function/tag.dart';
 import 'package:nfc_project/screen/section3/setting.dart';
 import 'package:nfc_project/screen/cardInfo.dart';
 import 'package:nfc_project/widget/custom/appBar.dart';
@@ -15,7 +15,8 @@ class TrackedScreen extends StatefulWidget {
 }
 
 class _TrackedScreenState extends State<TrackedScreen> {
-  List<Model> trackedCards = [];
+  final bool TestSystem = false;
+  List<Model> Tags = [];
 
   @override
   void initState() {
@@ -24,10 +25,24 @@ class _TrackedScreenState extends State<TrackedScreen> {
   }
 
   Future<void> loadTrackedCards() async {
-    final cards = await DeckService().load(game: 'cfv');
+    final cards = await TagService().load(game: 'cfv');
     setState(() {
-      trackedCards = cards;
+      Tags = cards;
     });
+  }
+
+  void delete() {
+    if (Tags.isEmpty) return;
+    TagService().delete().then(
+      (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Deleted all tags successfully')),
+        );
+        setState(() {
+          Tags = [];
+        });
+      },
+    );
   }
 
   @override
@@ -35,7 +50,7 @@ class _TrackedScreenState extends State<TrackedScreen> {
     final Map<dynamic, dynamic> menu = {
       Icons.arrow_back_ios_rounded: SettingScreen(),
       'Tracked': null,
-      null: null,
+      TestSystem ? Icons.delete_rounded : null: delete,
     };
 
     return Scaffold(
@@ -48,12 +63,12 @@ class _TrackedScreenState extends State<TrackedScreen> {
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),
-        itemCount: trackedCards.length,
+        itemCount: Tags.length,
         itemBuilder: (context, index) {
           return CustomCard(
-            card: trackedCards[index],
+            card: Tags[index],
             page: CardInfoScreen(
-              card: trackedCards[index],
+              card: Tags[index],
               page: TrackedScreen(),
               isAdd: false,
             ),

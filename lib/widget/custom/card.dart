@@ -80,7 +80,7 @@ class _CustomCardState extends State<CustomCard> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                "No Image Available",
+                                'No Image Available',
                                 style: Theme.of(context).textTheme.bodyMedium,
                                 textAlign: TextAlign.center,
                               ),

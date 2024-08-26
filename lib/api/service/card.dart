@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:nfc_project/api/service/factory.dart';
 import 'package:nfc_project/api/service/model.dart';
 
-class CardsService {
+class CardService {
   final String game;
   late final String baseUrl;
 
-  CardsService({required String game}) : game = game {
+  CardService({required String game}) : game = game {
     switch (game) {
       case 'cfv':
         // https://card-fight-vanguard-api.ue.r.appspot.com
@@ -18,10 +18,7 @@ class CardsService {
     }
   }
 
-  Future<List<Model>> getData({
-    required String game,
-    required String search,
-  }) async {
+  Future<List<Model>> getData({required String search}) async {
     http.Response response = await http.get(Uri.parse(baseUrl + search));
     try {
       if (response.statusCode == 200) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/deck.dart';
 import 'package:nfc_project/api/service/model.dart';
+import 'package:nfc_project/function/tag.dart';
 
 class NFC extends StatefulWidget {
   final bool isNFCDetected;
@@ -34,10 +34,16 @@ class _NFCState extends State<NFC> {
 
   Future<void> toggleAdd() async {
     if (widget.card != null) {
-      await DeckService().save(
+      await TagService().save(
         game: 'cfv',
         card: widget.card!,
-        cardCount: 1,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Card has been added to the tag.'),
+          duration: Duration(seconds: 2),
+        ),
       );
     }
   }

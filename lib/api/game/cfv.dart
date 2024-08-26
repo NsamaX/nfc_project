@@ -171,8 +171,8 @@ class CFV extends Model {
       };
 
   @override
-  String getImagePath() => imageUrlJp ?? '';
   String getName() => name ?? '';
+  String getImagePath() => imageUrlJp ?? '';
   String getDescription() => format ?? '';
 
   @override

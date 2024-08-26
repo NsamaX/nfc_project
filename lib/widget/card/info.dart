@@ -62,7 +62,7 @@ class CardInfo extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              "No Image Available",
+              'No Image Available',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -145,7 +145,7 @@ class CardInfo extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                "Upload Image",
+                'Upload Image',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],

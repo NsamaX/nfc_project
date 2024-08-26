@@ -24,6 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
   late final String search;
   int currentPage = 1;
   List<Model> cardList = [];
+  List<Model> displayedCards = [];
 
   @override
   void initState() {
@@ -75,8 +76,10 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         if (page == 1) {
           cardList = fetchedData;
+          displayedCards = fetchedData;
         } else {
           cardList.addAll(fetchedData);
+          displayedCards.addAll(fetchedData);
         }
         currentPage = page + 1;
       });
@@ -91,6 +94,12 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  void _updateSearchResults(List<Model> results) {
+    setState(() {
+      displayedCards = results;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
@@ -103,14 +112,17 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: CustomAppBar(menu: menu),
       body: Column(
         children: [
-          CustomSearchBar(),
+          CustomSearchBar(
+            allCards: cardList,
+            onSearchResults: _updateSearchResults,
+          ),
           SizedBox(height: 6),
           Expanded(
             child: ListView.builder(
               controller: scrollController,
-              itemCount: cardList.length,
+              itemCount: displayedCards.length,
               itemBuilder: (context, index) {
-                final card = cardList[index];
+                final card = displayedCards[index];
                 return LabelCard(
                   card: card,
                   page: CardInfoScreen(

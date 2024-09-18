@@ -1,22 +1,25 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
-import 'package:nfc_project/api/service/factory.dart';
-import 'package:nfc_project/api/service/model.dart';
+import 'package:project/api/service/factory.dart';
+import 'package:project/api/service/model.dart';
 
 class DeckService {
   final Uuid _uuid = Uuid();
-  late final String deckID;
-  final String game;
+  late final String deckID; // สร้าง deckID ขึ้นมาใหม่หากไม่ได้รับค่า
+  final String game; // กำหนดชื่อเกมที่ใช้งาน
 
+  // Constructor สำหรับสร้าง DeckService โดยมีการตั้งค่า deckID หากไม่กำหนดจะสร้างใหม่
   DeckService({String? deckID, required this.game}) {
     this.deckID = deckID ?? _uuid.v4();
   }
 
+  // ดึง SharedPreferences เพื่อใช้งาน
   Future<SharedPreferences> _prefs() async {
     return await SharedPreferences.getInstance();
   }
 
+  // ตรวจสอบว่ามีการ์ดที่ระบุอยู่ใน deck แล้วหรือยัง
   Future<bool> check({required String cardName}) async {
     final prefs = await _prefs();
     final savedCards = prefs.getStringList(deckID);
@@ -38,25 +41,24 @@ class DeckService {
     return false;
   }
 
-  Future<void> save({
-    required Model card,
-    required int cardCount,
-  }) async {
-    if (await check(cardName: card.getName())) return;
-
+  // บันทึก deck ลงใน SharedPreferences โดยแปลงข้อมูลเป็น JSON
+  Future<void> saveDeck(List<Model> deck) async {
     final prefs = await _prefs();
-    final savedCards = prefs.getStringList(deckID) ?? [];
+    final savedCards = <String>[];
 
-    final cardMap = {
-      'game': game,
-      'model': card.toJson(),
-      'cardCount': cardCount,
-    };
+    for (final card in deck) {
+      final cardMap = {
+        'game': game,
+        'model': card.toJson(),
+        'cardCount': card.getCardCount(),
+      };
+      savedCards.add(jsonEncode(cardMap));
+    }
 
-    savedCards.add(jsonEncode(cardMap));
     await prefs.setStringList(deckID, savedCards);
   }
 
+  // โหลด deck จาก SharedPreferences และคืนค่าเป็น List ของ Model
   Future<List<Model>> load() async {
     final prefs = await _prefs();
     final savedCards = prefs.getStringList(deckID);
@@ -88,6 +90,7 @@ class DeckService {
     return cardsByName.values.toList();
   }
 
+  // อัปเดตข้อมูลการ์ดใน deck และบันทึกการเปลี่ยนแปลงลง SharedPreferences
   Future<void> update({
     required Model card,
     required int cardCount,
@@ -111,24 +114,30 @@ class DeckService {
           cardMap['cardCount'] = cardCount;
 
           if (cardCount < 1) {
-            savedCards.removeAt(i);
+            savedCards.removeAt(i); // ลบการ์ดออกหาก cardCount น้อยกว่า 1
           } else {
-            savedCards[i] = jsonEncode(cardMap);
+            savedCards[i] = jsonEncode(cardMap); // อัปเดตการ์ดใน deck
           }
 
-          await prefs.setStringList(deckID, savedCards);
+          await prefs.setStringList(deckID, savedCards); // บันทึกการเปลี่ยนแปลง
           return;
         }
       }
 
+      // หากไม่พบการ์ดที่ต้องการอัปเดต จะทำการเพิ่มการ์ดเข้าไปใหม่
       if (!found) {
-        await save(card: card, cardCount: cardCount);
+        await saveDeck([
+          ...savedCards.map((card) => jsonDecode(card) as Model),
+          card
+        ]..lastWhere((model) => model.getName() == card.getName(),
+            orElse: () => card));
       }
     }
   }
 
+  // ลบ deck ออกจาก SharedPreferences
   Future<void> delete() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(deckID);
+    await prefs.remove(deckID); // ลบ deckID ที่บันทึกไว้
   }
 }

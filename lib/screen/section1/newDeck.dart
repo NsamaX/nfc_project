@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/function/deck.dart';
-import 'package:nfc_project/api/service/model.dart';
-import 'package:nfc_project/screen/section1/tracking.dart';
-import 'package:nfc_project/screen/cardInfo.dart';
-import 'package:nfc_project/widget/custom/appBar.dart';
-import 'package:nfc_project/widget/custom/bottomNav.dart';
-import 'package:nfc_project/widget/custom/card.dart';
+import 'package:project/function/deck.dart';
+import 'package:project/api/service/model.dart';
+import 'package:project/function/tag.dart';
+import 'package:project/screen/section1/tracking.dart';
+import 'package:project/screen/cardInfo.dart';
+import 'package:project/widget/custom/appBar.dart';
+import 'package:project/widget/custom/bottomNav.dart';
+import 'package:project/widget/custom/card.dart';
 
 class NewDeckScreen extends StatefulWidget {
   final String deckName;
@@ -17,17 +18,25 @@ class NewDeckScreen extends StatefulWidget {
 }
 
 class _NewDeckScreenState extends State<NewDeckScreen> {
+  final bool TestSystem = true;
+
   bool menu = true;
   bool list = false;
   bool isEdit = false;
   List<Model> deck = [];
-
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     loadDeck();
+  }
+
+  Future<void> loadTrackedCards() async {
+    final cards = await TagService().load(game: 'cfv');
+    setState(() {
+      deck = cards;
+    });
   }
 
   Future<void> loadDeck() async {
@@ -48,6 +57,21 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
         isLoading = false;
       });
     }
+  }
+
+  void saveDeck() {
+    DeckService(game: 'cfv').saveDeck(deck).then(
+      (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Deck saved successfully')),
+        );
+      },
+    ).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save deck: $e')),
+      );
+    });
+    toggleMenu();
   }
 
   void delete() {
@@ -93,10 +117,10 @@ class _NewDeckScreenState extends State<NewDeckScreen> {
     };
     final Map<dynamic, dynamic> menu2 = {
       Icons.delete_rounded: delete,
-      null: null,
+      TestSystem ? Icons.refresh : null: loadTrackedCards, // เพื่อการทดสอบแอป
       widget.deckName: null,
       deck.length.toString(): null,
-      'Save': toggleMenu,
+      'Save': saveDeck,
     };
 
     return Scaffold(

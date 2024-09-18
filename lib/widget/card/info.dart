@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:nfc_project/api/service/model.dart';
+import 'package:project/api/service/model.dart';
 
 class CardInfo extends StatelessWidget {
   final bool isCustom;

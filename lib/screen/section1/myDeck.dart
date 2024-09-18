@@ -1,19 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/newDeck.dart';
-import 'package:nfc_project/widget/card/deck.dart';
-import 'package:nfc_project/widget/custom/appBar.dart';
-import 'package:nfc_project/widget/custom/bottomNav.dart';
+import 'package:project/screen/section1/newDeck.dart';
+import 'package:project/widget/card/deck.dart';
+import 'package:project/widget/custom/appBar.dart';
+import 'package:project/widget/custom/bottomNav.dart';
+import 'package:project/function/deck.dart';
+import 'package:project/api/service/model.dart';
 
-class MyDeckScreen extends StatefulWidget {
-  const MyDeckScreen({super.key});
+class ScreenMyDeck extends StatefulWidget {
+  const ScreenMyDeck({super.key});
 
   @override
-  State<MyDeckScreen> createState() => _MyDeckScreenState();
+  State<ScreenMyDeck> createState() => _ScreenMyDeckState();
 }
 
-class _MyDeckScreenState extends State<MyDeckScreen> {
+class _ScreenMyDeckState extends State<ScreenMyDeck> {
   bool isEdit = false;
-  final int deck = 0;
+  List<Model> deckList = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadDecks();
+  }
+
+  Future<void> loadDecks() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final deckService = DeckService(game: 'cfv');
+      final decks = await deckService.load();
+      setState(() {
+        deckList = decks;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load decks: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   void toggleEdit() {
     setState(() {
@@ -21,32 +51,43 @@ class _MyDeckScreenState extends State<MyDeckScreen> {
     });
   }
 
+  void navigateToNewDeck() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NewDeckScreen(deckName: 'New Deck'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
-      Icons.open_in_new_rounded: NewDeckScreen(deckName: 'New Deck'),
+      Icons.open_in_new_rounded: navigateToNewDeck,
       'My Deck': null,
-      Icons.edit_rounded: deck > 0 ? toggleEdit : null,
+      Icons.edit_rounded: deckList.isNotEmpty ? toggleEdit : null,
     };
 
     return Scaffold(
       appBar: CustomAppBar(menu: menu),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemCount: deck,
-        itemBuilder: (context, index) {
-          return Deck(
-            isEdit: isEdit,
-            deckName: 'Deck ${index + 1}',
-          );
-        },
-      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: deckList.length,
+              itemBuilder: (context, index) {
+                return Deck(
+                  isEdit: isEdit,
+                  deckName: deckList[index].getName(), // Display deck name
+                );
+              },
+            ),
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),
     );
   }

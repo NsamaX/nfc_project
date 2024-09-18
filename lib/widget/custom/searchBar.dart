@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/model.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  final List<Model> allCards;
-  final Function(List<Model>) onSearchResults;
+  final ValueChanged<String> onSearch;
 
-  const CustomSearchBar({
-    super.key,
-    required this.allCards,
-    required this.onSearchResults,
-  });
+  const CustomSearchBar({super.key, required this.onSearch});
 
   @override
   State<CustomSearchBar> createState() => _CustomSearchBarState();
@@ -17,29 +11,6 @@ class CustomSearchBar extends StatefulWidget {
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
   final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_onSearchChanged);
-  }
-
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _onSearchChanged() {
-    final searchQuery = _searchController.text.toLowerCase();
-    final searchResults = widget.allCards.where((card) {
-      final cardName = card.getName().toLowerCase();
-      return cardName.contains(searchQuery);
-    }).toSet();
-
-    widget.onSearchResults(searchResults.toList());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +46,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   filled: true,
                   fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                 ),
+                onChanged: (value) {
+                  widget.onSearch(value);
+                },
               ),
             ),
             const SizedBox(width: 8),
@@ -82,7 +56,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               onPressed: () {
                 FocusScope.of(context).unfocus();
                 _searchController.clear();
-                widget.onSearchResults(widget.allCards.toSet().toList());
+                widget.onSearch('');
               },
               child: Text(
                 'Cancel',

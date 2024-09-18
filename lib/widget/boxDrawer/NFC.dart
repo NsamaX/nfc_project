@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/model.dart';
-import 'package:nfc_project/widget/NFC.dart';
+import 'package:project/api/service/model.dart';
+import 'package:project/widget/NFC.dart';
 
-class NFCBox extends StatefulWidget {
-  final bool NFCBoxVisible;
-  final double NFCBoxWidth;
-  final double NFCBoxHeight;
+class BoxNFC extends StatefulWidget {
+  final bool BoxNFCVisible;
+  final double BoxNFCWidth;
+  final double BoxNFCHeight;
   final Model? card;
 
-  const NFCBox({
+  const BoxNFC({
     Key? key,
-    required this.NFCBoxVisible,
-    required this.NFCBoxWidth,
-    required this.NFCBoxHeight,
+    required this.BoxNFCVisible,
+    required this.BoxNFCWidth,
+    required this.BoxNFCHeight,
     this.card,
   }) : super(key: key);
 
   @override
-  _NFCBoxState createState() => _NFCBoxState();
+  _BoxNFCState createState() => _BoxNFCState();
 }
 
-class _NFCBoxState extends State<NFCBox> {
+class _BoxNFCState extends State<BoxNFC> {
   static const Duration animationDuration = Duration(milliseconds: 200);
   static const BorderRadius borderRadius = BorderRadius.only(
     topLeft: Radius.circular(36),
     topRight: Radius.circular(36),
   );
-  static const double nfcBoxHeightFactor = 0.4;
+  static const double BoxnfcHeightFactor = 0.4;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,11 @@ class _NFCBoxState extends State<NFCBox> {
       duration: animationDuration,
       transform: Matrix4.translationValues(
         0,
-        widget.NFCBoxVisible ? 0 : widget.NFCBoxHeight,
+        widget.BoxNFCVisible ? 0 : widget.BoxNFCHeight,
         0,
       ),
-      width: widget.NFCBoxWidth,
-      height: widget.NFCBoxHeight * nfcBoxHeightFactor,
+      width: widget.BoxNFCWidth,
+      height: widget.BoxNFCHeight * BoxnfcHeightFactor,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: borderRadius,

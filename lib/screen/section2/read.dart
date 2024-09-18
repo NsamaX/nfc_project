@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/widget/boxDrawer/history.dart';
-import 'package:nfc_project/widget/boxDrawer/option.dart';
-import 'package:nfc_project/widget/custom/appBar.dart';
-import 'package:nfc_project/widget/custom/bottomNav.dart';
-import 'package:nfc_project/widget/NFC.dart';
+import 'package:project/widget/boxDrawer/history.dart';
+import 'package:project/widget/boxDrawer/option.dart';
+import 'package:project/widget/custom/appBar.dart';
+import 'package:project/widget/custom/bottomNav.dart';
+import 'package:project/widget/NFC.dart';
 
-class ReadWriteScreen extends StatefulWidget {
-  const ReadWriteScreen({super.key});
+class ScreenRead extends StatefulWidget {
+  const ScreenRead({super.key});
 
   @override
-  State<ReadWriteScreen> createState() => _ReadWriteScreenState();
+  State<ScreenRead> createState() => _ScreenReadState();
 }
 
-class _ReadWriteScreenState extends State<ReadWriteScreen> {
+class _ScreenReadState extends State<ScreenRead> {
   bool nfc = false;
   bool history = false;
   bool option = false;
@@ -55,21 +55,21 @@ class _ReadWriteScreenState extends State<ReadWriteScreen> {
         child: Stack(
           children: [
             Center(
-              child: NFC(isNFCDetected: nfc),
+              child: NFC(NFCDetected: nfc),
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 200),
               left: history ? 0 : -100,
-              child: HistoryBox(
-                historyBoxVisible: history,
-                historyBoxHeight: screenHeight,
+              child: BoxHistory(
+                BoxHistoryVisible: history,
+                BoxHistoryHeight: screenHeight,
               ),
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 200),
               top: 20,
               right: option ? 0 : -100,
-              child: OptionBox(optionBoxVisible: option),
+              child: BoxOption(BoxOptionVisible: option),
             ),
           ],
         ),

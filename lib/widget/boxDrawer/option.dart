@@ -1,45 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/cardInfo.dart';
-import 'package:nfc_project/screen/section2/readWrite.dart';
-import 'package:nfc_project/screen/section2/search.dart';
+import 'package:project/screen/cardInfo.dart';
+import 'package:project/screen/section2/read.dart';
+import 'package:project/screen/section2/search.dart';
 
-class OptionBox extends StatefulWidget {
-  final bool optionBoxVisible;
+class BoxOption extends StatefulWidget {
+  final bool BoxOptionVisible;
 
-  const OptionBox({Key? key, required this.optionBoxVisible}) : super(key: key);
+  const BoxOption({Key? key, required this.BoxOptionVisible}) : super(key: key);
 
   @override
-  _OptionBoxState createState() => _OptionBoxState();
+  _BoxOptionState createState() => _BoxOptionState();
 }
 
-class _OptionBoxState extends State<OptionBox> {
+class _BoxOptionState extends State<BoxOption> {
   static final Duration animationDuration = Duration(milliseconds: 200);
   static final BorderRadius borderRadius = BorderRadius.circular(8);
   static const double boxSize = 50;
   static const double spacing = 16;
-
-  final String game = 'cfv';
-  late String imagePath;
-
-  @override
-  void initState() {
-    super.initState();
-
-    switch (game) {
-      case 'cfv':
-        imagePath = 'asset/image/icon_Vanguard.png';
-        break;
-      default:
-        imagePath = 'asset/image/icon_flutter.png';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: animationDuration,
       transform: Matrix4.translationValues(
-        widget.optionBoxVisible ? 0 : boxSize,
+        widget.BoxOptionVisible ? 0 : boxSize,
         0,
         0,
       ),
@@ -47,17 +31,17 @@ class _OptionBoxState extends State<OptionBox> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           buildItem(
-            image: imagePath,
-            page: SearchScreen(game: game),
+            image: 'asset/image/icon_Vanguard.png',
+            page: ScreenSearch(game: 'cfv'),
           ),
           buildItem(
             label: 'Other',
-            page: SearchScreen(),
+            page: ScreenSearch(),
           ),
           buildItem(
             label: 'Custom',
             page: CardInfoScreen(
-              page: ReadWriteScreen(),
+              page: ScreenRead(),
               isCustom: true,
             ),
           ),

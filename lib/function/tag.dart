@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
-import 'package:nfc_project/api/service/factory.dart';
-import 'package:nfc_project/api/service/model.dart';
+import 'package:project/api/service/factory.dart';
+import 'package:project/api/service/model.dart';
 
 class TagService {
   final Uuid _uuid = Uuid();

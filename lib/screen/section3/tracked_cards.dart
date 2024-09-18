@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/model.dart';
-import 'package:nfc_project/function/tag.dart';
-import 'package:nfc_project/screen/section3/setting.dart';
-import 'package:nfc_project/screen/cardInfo.dart';
-import 'package:nfc_project/widget/custom/appBar.dart';
-import 'package:nfc_project/widget/custom/bottomNav.dart';
-import 'package:nfc_project/widget/custom/card.dart';
+import 'package:project/api/service/model.dart';
+import 'package:project/function/tag.dart';
+import 'package:project/screen/section3/setting.dart';
+import 'package:project/screen/cardInfo.dart';
+import 'package:project/widget/custom/appBar.dart';
+import 'package:project/widget/custom/bottomNav.dart';
+import 'package:project/widget/custom/card.dart';
 
 class TrackedScreen extends StatefulWidget {
   const TrackedScreen({super.key});
@@ -50,7 +50,7 @@ class _TrackedScreenState extends State<TrackedScreen> {
     final Map<dynamic, dynamic> menu = {
       Icons.arrow_back_ios_rounded: SettingScreen(),
       'Tracked': null,
-      TestSystem ? Icons.delete_rounded : null: delete,
+      TestSystem ? Icons.delete_rounded : null: delete, // เพื่อการทดสอบแอป
     };
 
     return Scaffold(

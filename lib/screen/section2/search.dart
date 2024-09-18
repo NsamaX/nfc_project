@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/card.dart';
-import 'package:nfc_project/api/service/model.dart';
-import 'package:nfc_project/screen/section2/readWrite.dart';
-import 'package:nfc_project/screen/cardInfo.dart';
-import 'package:nfc_project/widget/custom/appBar.dart';
-import 'package:nfc_project/widget/custom/searchBar.dart';
-import 'package:nfc_project/widget/label/card.dart';
+import 'package:project/api/service/card.dart';
+import 'package:project/api/service/model.dart';
+import 'package:project/screen/section2/read.dart';
+import 'package:project/screen/cardInfo.dart';
+import 'package:project/widget/custom/appBar.dart';
+import 'package:project/widget/custom/searchBar.dart';
+import 'package:project/widget/label/card.dart';
 
-class SearchScreen extends StatefulWidget {
+class ScreenSearch extends StatefulWidget {
   final String? game;
 
-  const SearchScreen({super.key, this.game = ''});
+  const ScreenSearch({super.key, this.game = ''});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<ScreenSearch> createState() => _ScreenSearchState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  final ScrollController scrollController = ScrollController();
-  bool isLoading = false;
-
+class _ScreenSearchState extends State<ScreenSearch> {
+  bool hasMoreData = true;
   late final bool other;
-  late final String search;
+  late final String searchURL;
   int currentPage = 1;
   List<Model> cardList = [];
   List<Model> displayedCards = [];
@@ -33,39 +31,25 @@ class _SearchScreenState extends State<SearchScreen> {
 
     switch (widget.game) {
       case 'cfv':
-        search = 'cards?page=';
+        searchURL = 'cards?page=';
         break;
       default:
-        search = '';
+        searchURL = '';
     }
 
     if (!other) {
-      scrollController.addListener(scrollListener);
-      getData(search: search, page: currentPage);
+      loadAllData();
     }
   }
 
-  @override
-  void dispose() {
-    scrollController.removeListener(scrollListener);
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  void scrollListener() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange &&
-        !isLoading) {
-      getData(search: search, page: currentPage);
+  Future<void> loadAllData() async {
+    while (hasMoreData) {
+      await getData(search: searchURL, page: currentPage);
     }
   }
 
   Future<void> getData({required String search, required int page}) async {
     if (!mounted) return;
-
-    setState(() {
-      isLoading = true;
-    });
 
     try {
       List<Model> fetchedData = await CardService(game: widget.game!)
@@ -74,52 +58,60 @@ class _SearchScreenState extends State<SearchScreen> {
       if (!mounted) return;
 
       setState(() {
-        if (page == 1) {
-          cardList = fetchedData;
-          displayedCards = fetchedData;
+        if (fetchedData.isNotEmpty) {
+          if (page == 1) {
+            cardList = fetchedData;
+            displayedCards = filterCards(fetchedData, _searchQuery);
+          } else {
+            cardList.addAll(fetchedData);
+            displayedCards = filterCards(cardList, _searchQuery);
+          }
+          currentPage = page + 1;
         } else {
-          cardList.addAll(fetchedData);
-          displayedCards.addAll(fetchedData);
+          hasMoreData = false;
         }
-        currentPage = page + 1;
       });
     } catch (e) {
       print('Error fetching data: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
     }
   }
 
-  void _updateSearchResults(List<Model> results) {
+  String _searchQuery = '';
+
+  void _updateSearchResults(String query) {
     setState(() {
-      displayedCards = results;
+      _searchQuery = query;
+      displayedCards = filterCards(cardList, _searchQuery);
     });
+  }
+
+  List<Model> filterCards(List<Model> cards, String query) {
+    final lowerCaseQuery = query.toLowerCase();
+    if (lowerCaseQuery.isEmpty) {
+      return cards;
+    }
+    return cards
+        .where((card) => card.getName().toLowerCase().contains(lowerCaseQuery))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> menu = {
-      Icons.arrow_back_ios_rounded: ReadWriteScreen(),
+      Icons.arrow_back_ios_rounded: ScreenRead(),
       !other ? 'Search' : 'Other': null,
       null: null,
+      // Icons.filter_alt_rounded: null, ฟิลเตอร์การ์ดที่หา แต่ไว้ทำในอนาคต
     };
 
     return Scaffold(
       appBar: CustomAppBar(menu: menu),
       body: Column(
         children: [
-          CustomSearchBar(
-            allCards: cardList,
-            onSearchResults: _updateSearchResults,
-          ),
+          CustomSearchBar(onSearch: _updateSearchResults),
           SizedBox(height: 6),
           Expanded(
             child: ListView.builder(
-              controller: scrollController,
               itemCount: displayedCards.length,
               itemBuilder: (context, index) {
                 final card = displayedCards[index];
@@ -127,17 +119,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   card: card,
                   page: CardInfoScreen(
                     card: card,
-                    page: SearchScreen(game: widget.game),
+                    page: ScreenSearch(game: widget.game),
                   ),
                 );
               },
             ),
           ),
-          if (isLoading)
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: CircularProgressIndicator(),
-            ),
         ],
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/model.dart';
-import 'package:nfc_project/widget/boxDrawer/NFC.dart';
-import 'package:nfc_project/widget/card/info.dart';
-import 'package:nfc_project/widget/custom/appBar.dart';
+import 'package:project/api/service/model.dart';
+import 'package:project/widget/boxDrawer/NFC.dart';
+import 'package:project/widget/card/info.dart';
+import 'package:project/widget/custom/appBar.dart';
 
 class CardInfoScreen extends StatefulWidget {
   final Model? card;
@@ -66,10 +66,10 @@ class _CardInfoScreenState extends State<CardInfoScreen> {
               bottom: isNFCDetected ? 0 : -screenSize.height * 0.4,
               left: 0,
               right: 0,
-              child: NFCBox(
-                NFCBoxVisible: isNFCDetected,
-                NFCBoxWidth: screenSize.width,
-                NFCBoxHeight: screenSize.height,
+              child: BoxNFC(
+                BoxNFCVisible: isNFCDetected,
+                BoxNFCWidth: screenSize.width,
+                BoxNFCHeight: screenSize.height,
                 card: widget.card,
               ),
             ),

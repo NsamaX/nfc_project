@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/function/tag.dart';
-import 'package:nfc_project/screen/section2/readWrite.dart';
-import 'package:nfc_project/screen/cardInfo.dart';
-import 'package:nfc_project/widget/label/card.dart';
-import 'package:nfc_project/api/service/model.dart';
+import 'package:project/function/tag.dart';
+import 'package:project/screen/section2/read.dart';
+import 'package:project/screen/cardInfo.dart';
+import 'package:project/widget/label/card.dart';
+import 'package:project/api/service/model.dart';
 
-class HistoryBox extends StatefulWidget {
-  final bool historyBoxVisible;
-  final double historyBoxHeight;
+class BoxHistory extends StatefulWidget {
+  final bool BoxHistoryVisible;
+  final double BoxHistoryHeight;
 
-  const HistoryBox({
+  const BoxHistory({
     Key? key,
-    required this.historyBoxVisible,
-    required this.historyBoxHeight,
+    required this.BoxHistoryVisible,
+    required this.BoxHistoryHeight,
   }) : super(key: key);
 
   @override
-  _HistoryBoxState createState() => _HistoryBoxState();
+  _BoxHistoryState createState() => _BoxHistoryState();
 }
 
-class _HistoryBoxState extends State<HistoryBox> {
+class _BoxHistoryState extends State<BoxHistory> {
   static const Duration animationDuration = Duration(milliseconds: 200);
-  static const double historyBoxWidth = 260;
+  static const double BoxHistoryWidth = 260;
 
   List<Model> savedCards = [];
-  bool isLoading = true;
 
   @override
   void initState() {
@@ -36,7 +35,6 @@ class _HistoryBoxState extends State<HistoryBox> {
     final cards = await TagService().load(game: 'cfv');
     setState(() {
       savedCards = cards;
-      isLoading = false;
     });
   }
 
@@ -45,12 +43,12 @@ class _HistoryBoxState extends State<HistoryBox> {
     return AnimatedContainer(
       duration: animationDuration,
       transform: Matrix4.translationValues(
-        widget.historyBoxVisible ? 0 : -historyBoxWidth,
+        widget.BoxHistoryVisible ? 0 : -BoxHistoryWidth,
         0,
         0,
       ),
-      width: historyBoxWidth,
-      height: widget.historyBoxHeight,
+      width: BoxHistoryWidth,
+      height: widget.BoxHistoryHeight,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -62,19 +60,17 @@ class _HistoryBoxState extends State<HistoryBox> {
           ),
         ],
       ),
-      child: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: savedCards.length,
-              itemBuilder: (context, index) {
-                final card = savedCards[index];
-                return LabelCard(
-                  card: card,
-                  darkTheme: false,
-                  page: CardInfoScreen(card: card, page: ReadWriteScreen()),
-                );
-              },
-            ),
+      child: ListView.builder(
+        itemCount: savedCards.length,
+        itemBuilder: (context, index) {
+          final card = savedCards[index];
+          return LabelCard(
+            card: card,
+            darkTheme: false,
+            page: CardInfoScreen(card: card, page: ScreenRead()),
+          );
+        },
+      ),
     );
   }
 }

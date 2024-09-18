@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/model.dart';
+import 'package:project/api/service/model.dart';
 
 class LabelCard extends StatelessWidget {
   final bool darkTheme;

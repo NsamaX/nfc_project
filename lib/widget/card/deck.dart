@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/newDeck.dart';
+import 'package:project/screen/section1/newDeck.dart';
 
 class Deck extends StatelessWidget {
   final bool isEdit;

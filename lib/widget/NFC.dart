@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/api/service/model.dart';
-import 'package:nfc_project/function/tag.dart';
+import 'package:project/api/service/model.dart';
+import 'package:project/function/tag.dart';
 
 class NFC extends StatefulWidget {
-  final bool isNFCDetected;
+  final bool NFCDetected;
   final Model? card;
 
   const NFC({
     super.key,
-    this.isNFCDetected = true,
+    this.NFCDetected = true,
     this.card,
   });
 
@@ -18,17 +18,17 @@ class NFC extends StatefulWidget {
 
 class _NFCState extends State<NFC> {
   final Duration animationDuration = const Duration(milliseconds: 600);
-  late bool isNFCDetected;
+  late bool NFCDetected;
 
   @override
   void initState() {
     super.initState();
-    isNFCDetected = widget.isNFCDetected;
+    NFCDetected = widget.NFCDetected;
   }
 
   void toggleNFCStatus() {
     setState(() {
-      isNFCDetected = !isNFCDetected;
+      NFCDetected = !NFCDetected;
     });
   }
 
@@ -66,7 +66,7 @@ class _NFCState extends State<NFC> {
             height: readIcon / 1.6,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isNFCDetected
+              color: NFCDetected
                   ? Theme.of(context).secondaryHeaderColor
                   : Theme.of(context).colorScheme.secondary,
             ),
@@ -89,7 +89,7 @@ class _NFCState extends State<NFC> {
             child: Icon(
               Icons.wifi_rounded,
               size: 120,
-              color: isNFCDetected
+              color: NFCDetected
                   ? Theme.of(context).secondaryHeaderColor
                   : Theme.of(context).colorScheme.secondary,
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/myDeck.dart';
-import 'package:nfc_project/screen/section2/readWrite.dart';
-import 'package:nfc_project/screen/section3/setting.dart';
+import 'package:project/screen/section1/myDeck.dart';
+import 'package:project/screen/section2/read.dart';
+import 'package:project/screen/section3/setting.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
   final int currentIndex;
@@ -15,8 +15,8 @@ class CustomBottomNavigation extends StatefulWidget {
 
 class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   final List<Widget> pages = [
-    MyDeckScreen(),
-    ReadWriteScreen(),
+    ScreenMyDeck(),
+    ScreenRead(),
     SettingScreen(),
   ];
 
@@ -39,9 +39,9 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
 
   void navigateToPage(int index) {
     if (index < pages.length) {
-      Navigator.pushReplacement(
-        context,
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => pages[index]),
+        (Route<dynamic> route) => false,
       );
     }
   }

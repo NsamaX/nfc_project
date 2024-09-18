@@ -1,4 +1,4 @@
-import 'package:nfc_project/api/service/model.dart';
+import 'package:project/api/service/model.dart';
 
 class CFV extends Model {
   final int? id;

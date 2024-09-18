@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_project/screen/section1/newDeck.dart';
-import 'package:nfc_project/screen/cardInfo.dart';
-import 'package:nfc_project/widget/custom/appBar.dart';
-import 'package:nfc_project/widget/label/card.dart';
+import 'package:project/screen/section1/newDeck.dart';
+import 'package:project/screen/cardInfo.dart';
+import 'package:project/widget/custom/appBar.dart';
+import 'package:project/widget/label/card.dart';
 
 class TrackingScreen extends StatelessWidget {
   final String deckName;

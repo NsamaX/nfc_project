@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:nfc_project/api/service/factory.dart';
-import 'package:nfc_project/api/service/model.dart';
+import 'package:project/api/service/factory.dart';
+import 'package:project/api/service/model.dart';
 
 class CardService {
   final String game;
@@ -10,7 +10,6 @@ class CardService {
   CardService({required String game}) : game = game {
     switch (game) {
       case 'cfv':
-        // https://card-fight-vanguard-api.ue.r.appspot.com
         baseUrl = "https://card-fight-vanguard-api.ue.r.appspot.com/api/v1/";
         break;
       default:
